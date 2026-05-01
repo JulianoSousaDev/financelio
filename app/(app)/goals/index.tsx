@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useColors } from '../../hooks/useColors';
+import { useColors } from '../../src/presentation/hooks/useColors';
 
 export default function GoalsScreen() {
   const colors = useColors();

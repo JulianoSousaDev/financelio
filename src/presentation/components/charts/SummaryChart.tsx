@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { useTrendData } from '../../../../src/presentation/hooks/useTrendData';
-import { useColors, useSemanticColors } from '../../../hooks/useColors';
+import { useColors, useSemanticColors } from '../../../../src/presentation/hooks/useColors';
 
 const screenWidth = Dimensions.get('window').width;
 

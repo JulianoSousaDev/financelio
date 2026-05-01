@@ -8,7 +8,7 @@ import {
   Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useColors } from '../../../app/hooks/useColors';
+import { useColors } from '../hooks/useColors';
 import { Modal as CustomModal } from './ui/Modal';
 import { Input } from './ui/Input';
 import { useCategories } from '../hooks/useCategories';
@@ -239,8 +239,6 @@ export function TransactionModal({
         description: description.trim() || null,
         category_id: selectedCategoryId,
         date: date.toISOString().split('T')[0],
-        is_recurring: isRecurring,
-        recurring_interval: isRecurring ? recurringFrequency : null,
         is_fixed: isFixed,
       };
 

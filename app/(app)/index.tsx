@@ -10,7 +10,7 @@ import { MonthlyComparisonChart } from '../../src/presentation/components/charts
 import { CategoryPieChart } from '../../src/presentation/components/charts/CategoryPieChart';
 import { useChartFilters } from '../../src/hooks/useChartFilters';
 import { useFamilyContext } from '../../src/presentation/contexts/FamilyContext';
-import { useColors, useSemanticColors } from '../hooks/useColors';
+import { useColors, useSemanticColors } from '../../src/presentation/hooks/useColors';
 
 const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 

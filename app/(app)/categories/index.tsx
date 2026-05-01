@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useColors } from '../../hooks/useColors';
+import { useColors } from '../../src/presentation/hooks/useColors';
 import { useCategories } from '../../../src/presentation/hooks/useCategories';
 import { Modal } from '../../../src/presentation/components/ui/Modal';
 import { Input } from '../../../src/presentation/components/ui/Input';

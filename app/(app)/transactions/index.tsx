@@ -15,7 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
-import { useColors, useSemanticColors } from '../../hooks/useColors';
+import { useColors, useSemanticColors } from '../../src/presentation/hooks/useColors';
 import { TransactionModal } from '../../../src/presentation/components/TransactionModal';
 import { useAuth } from '../../../src/presentation/contexts/AuthContext';
 import { useFamilyContext } from '../../../src/presentation/contexts/FamilyContext';

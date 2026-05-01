@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useColors } from '../hooks/useColors';
+import { useColors } from '../../src/presentation/hooks/useColors';
 
 
 export default function AppLayout() {
