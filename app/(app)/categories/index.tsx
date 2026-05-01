@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useColors } from '../../src/presentation/hooks/useColors';
+import { useColors } from '../../../src/presentation/hooks/useColors';
 import { useCategories } from '../../../src/presentation/hooks/useCategories';
 import { Modal } from '../../../src/presentation/components/ui/Modal';
 import { Input } from '../../../src/presentation/components/ui/Input';
@@ -15,12 +15,19 @@ const COLOR_PALETTE = ['#EF4444','#F97316','#EAB308','#22C55E','#10B981','#06B6D
 export default function CategoriesScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { categories, loading, create, update, remove } = useCategories();
+  const { categories, loading, create, update, remove, refetch } = useCategories();
   const [modalVisible, setModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
   const [name, setName] = useState('');
   const [color, setColor] = useState(COLOR_PALETTE[0]);
   const [icon, setIcon] = useState('home');
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
 
   const openCreate = () => { setEditing(null); setName(''); setColor(COLOR_PALETTE[0]); setIcon('home'); setModalVisible(true); };
   const openEdit = (cat: Category) => { setEditing(cat); setName(cat.name); setColor(cat.color); setIcon(cat.icon); setModalVisible(true); };
@@ -69,6 +76,13 @@ export default function CategoriesScreen() {
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 100 }}
         ListEmptyComponent={<Text style={[styles.empty, { color: colors.textSecondary }]}>Nenhuma categoria</Text>}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={colors.primary}
+          />
+        }
       />
       
       <TouchableOpacity 

@@ -683,7 +683,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   swipeableContent: {
-    backgroundColor: 'transparent',
+    backgroundColor: colors.surface,
   },
   transactionItem: {
     flexDirection: 'row',

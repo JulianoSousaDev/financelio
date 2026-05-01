@@ -74,20 +74,22 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   triggerText: { 
-    color: '#FFFFFF',
     fontSize: 14,
   },
   overlay: { 
     flex: 1, 
     justifyContent: 'center', 
-    alignItems: 'center' 
+    alignItems: 'center',
+    zIndex: 999,
+    elevation: 999,
   },
   grid: { 
     flexDirection: 'row', 
     flexWrap: 'wrap', 
     width: 260, 
     borderRadius: 14, 
-    padding: 12 
+    padding: 12,
+    zIndex: 1000,
   },
   iconBtn: { 
     width: 52, 

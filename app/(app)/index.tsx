@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { DashboardCard } from '../../src/presentation/components/DashboardCard';
@@ -25,6 +25,13 @@ export default function DashboardScreen() {
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
   const { data, loading, error, refetch } = useMonthlySummary(month, year);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
 
   const prevMonth = () => {
     if (month === 1) { setMonth(12); setYear(y => y - 1); }
@@ -53,7 +60,15 @@ export default function DashboardScreen() {
   };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.background, paddingBottom: insets.bottom + 16, paddingTop: insets.top + 16 }]}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background, paddingBottom: insets.bottom + 16, paddingTop: insets.top + 16 }]}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.primary}
+        />
+      }
+    >
       <Text style={[styles.title, { color: colors.text }]}>Dashboard</Text>
       
       {/* Month selector */}
