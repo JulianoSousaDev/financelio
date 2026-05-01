@@ -6,18 +6,37 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
+  Share,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
 import {Ionicons} from '@expo/vector-icons';
 import {useColors} from '../../src/presentation/hooks/useColors';
 import {useTheme} from '../../src/presentation/contexts/ThemeContext';
+import {useFamilyMode} from '../../src/presentation/hooks/useFamilyMode';
 
 export default function SettingsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { isDark, toggleTheme } = useTheme();
+  const {isDark, toggleTheme} = useTheme();
+  const {isInFamily} = useFamilyMode();
+
+  const handleInviteMember = async () => {
+    try {
+      const result = await Share.share({
+        title: 'Convidar para o Financélio',
+        message:
+          'Junte-se a mim no Financélio para gerenciar as finanças da família juntos!\n\nBaixe o app: https://financelio.app',
+        url: 'financelio://',
+      });
+      if (result.action === Share.sharedAction) {
+        // Shared successfully
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
 
   return (
     <ScrollView
@@ -32,6 +51,33 @@ export default function SettingsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <Text style={[styles.title, {color: colors.text}]}>Configurações</Text>
+
+      {isInFamily && (
+        <TouchableOpacity
+          style={[styles.menuItem, {borderBottomColor: colors.border}]}
+          onPress={handleInviteMember}
+          activeOpacity={0.7}
+        >
+          <View
+            style={[styles.iconBox, {backgroundColor: colors.success + '20'}]}
+          >
+            <Ionicons name="person-add" size={22} color={colors.success} />
+          </View>
+          <View style={styles.menuContent}>
+            <Text style={[styles.menuTitle, {color: colors.text}]}>
+              Convidar membro da família
+            </Text>
+            <Text style={[styles.menuSubtitle, {color: colors.textSecondary}]}>
+              Compartilhe o app com sua família
+            </Text>
+          </View>
+          <Ionicons
+            name="share-outline"
+            size={20}
+            color={colors.textSecondary}
+          />
+        </TouchableOpacity>
+      )}
 
       <TouchableOpacity
         style={[styles.menuItem, {borderBottomColor: colors.border}]}
