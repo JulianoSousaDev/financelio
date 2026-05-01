@@ -95,7 +95,7 @@ export interface FinancialInsight {
 }
 
 // Chart types for dashboard graphs
-export type ChartPeriod = 'weekly' | 'monthly' | 'yearly';
+export type ChartPeriod = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
 export interface ChartFilter {
   period: ChartPeriod;
