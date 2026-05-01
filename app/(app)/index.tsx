@@ -19,7 +19,7 @@ export default function DashboardScreen() {
   const semantic = useSemanticColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { isInFamily } = useFamilyContext();
+  const { isInFamily: _isInFamily } = useFamilyContext();
   const { filter } = useChartFilters();
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
@@ -27,11 +27,16 @@ export default function DashboardScreen() {
   const { data, loading, error, refetch } = useMonthlySummary(month, year);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    await refetch();
-    setRefreshing(false);
-  };
+    try {
+      await refetch();
+    } catch (error) {
+      console.error('Error refreshing dashboard:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refetch]);
 
   const prevMonth = () => {
     if (month === 1) { setMonth(12); setYear(y => y - 1); }

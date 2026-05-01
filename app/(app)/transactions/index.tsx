@@ -100,7 +100,7 @@ function SwipeableItem({ children, onEdit, onDelete, colors }: SwipeableItemProp
       {/* Main content */}
       <Animated.View
         style={[
-          styles.swipeableContent,
+          { backgroundColor: colors.surface },
           { transform: [{ translateX }] },
         ]}
         {...panResponder.panHandlers}
@@ -118,7 +118,7 @@ export default function TransactionsScreen() {
   const { user } = useAuth();
   const { isFamilyMode, familyId } = useFamilyContext();
   const { categories } = useCategories();
-  const { category_id, period, memberId } = useLocalSearchParams<{ category_id?: string; period?: string; memberId?: string }>();
+  const { category_id, period, memberId: _memberId } = useLocalSearchParams<{ category_id?: string; period?: string; memberId?: string }>();
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
@@ -250,9 +250,15 @@ export default function TransactionsScreen() {
     fetchTransactions();
   }, [fetchTransactions]);
 
-  const handleRefresh = useCallback(() => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    fetchTransactions();
+    try {
+      await fetchTransactions();
+    } catch (error) {
+      console.error('Error refreshing transactions:', error);
+    } finally {
+      setRefreshing(false);
+    }
   }, [fetchTransactions]);
 
   const handleDelete = useCallback((transaction: Transaction) => {
@@ -681,9 +687,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '600',
-  },
-  swipeableContent: {
-    backgroundColor: colors.surface,
   },
   transactionItem: {
     flexDirection: 'row',

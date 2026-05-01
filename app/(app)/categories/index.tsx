@@ -23,11 +23,16 @@ export default function CategoriesScreen() {
   const [color, setColor] = useState(COLOR_PALETTE[0]);
   const [icon, setIcon] = useState('home');
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    await refetch();
-    setRefreshing(false);
-  };
+    try {
+      await refetch();
+    } catch (error) {
+      console.error('Error refreshing categories:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refetch]);
 
   const openCreate = () => { setEditing(null); setName(''); setColor(COLOR_PALETTE[0]); setIcon('home'); setModalVisible(true); };
   const openEdit = (cat: Category) => { setEditing(cat); setName(cat.name); setColor(cat.color); setIcon(cat.icon); setModalVisible(true); };
