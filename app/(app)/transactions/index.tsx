@@ -10,12 +10,12 @@ import {
   Animated,
   PanResponder,
   ScrollView,
-  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { useColors, useSemanticColors } from '../../src/presentation/hooks/useColors';
+import { useToast } from '../../src/presentation/hooks/useToast';
 import { TransactionModal } from '../../../src/presentation/components/TransactionModal';
 import { useAuth } from '../../../src/presentation/contexts/AuthContext';
 import { useFamilyContext } from '../../../src/presentation/contexts/FamilyContext';
@@ -115,10 +115,11 @@ export default function TransactionsScreen() {
   const colors = useColors();
   const semantic = useSemanticColors();
   const insets = useSafeAreaInsets();
+  const toast = useToast();
   const { user } = useAuth();
   const { isFamilyMode, familyId } = useFamilyContext();
   const { categories } = useCategories();
-  const { category_id, period, memberId: _memberId } = useLocalSearchParams<{ category_id?: string; period?: string; memberId?: string }>();
+  const { category_id, period } = useLocalSearchParams<{ category_id?: string; period?: string }>();
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
@@ -262,31 +263,33 @@ export default function TransactionsScreen() {
   }, [fetchTransactions]);
 
   const handleDelete = useCallback((transaction: Transaction) => {
+    // Show confirmation via toast-like approach - for now keeping Alert for confirmation
+    // since it's a confirmation dialog, not a notification
+    const handleConfirmDelete = async () => {
+      try {
+        const { error } = await supabase
+          .from('transactions')
+          .delete()
+          .eq('id', transaction.id);
+
+        if (error) throw error;
+        setTransactions(prev => prev.filter(t => t.id !== transaction.id));
+        toast.success('Excluído', 'Transação removida com sucesso');
+      } catch {
+        toast.error('Erro', 'Não foi possível excluir a transação');
+      }
+    };
+
+    // For confirmation dialog, we still use Alert since it's a blocking interaction
     Alert.alert(
       'Excluir transação',
       `Excluir "${transaction.description || 'esta transação'}"?`,
       [
         { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Excluir',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const { error } = await supabase
-                .from('transactions')
-                .delete()
-                .eq('id', transaction.id);
-
-              if (error) throw error;
-              setTransactions(prev => prev.filter(t => t.id !== transaction.id));
-            } catch {
-              Alert.alert('Erro', 'Não foi possível excluir a transação');
-            }
-          },
-        },
+        { text: 'Excluir', style: 'destructive', onPress: handleConfirmDelete },
       ]
     );
-  }, []);
+  }, [toast]);
 
   // Filter badge count
   const activeFilterCount = useMemo(() => {

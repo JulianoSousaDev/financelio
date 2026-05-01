@@ -8,27 +8,28 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Alert,
   ScrollView,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRouter, Link} from 'expo-router';
 import {useAuth} from '../../src/presentation/contexts/AuthContext';
-import {useColors} from '../hooks/useColors';
-import {borderRadius} from '../theme/constants';
+import {useToast} from '../../src/presentation/hooks/useToast';
+import {useColors} from '../../src/presentation/hooks/useColors';
+import {borderRadius} from '../../src/presentation/theme/constants';
 
 export default function LoginScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const {signIn} = useAuth();
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function handleLogin() {
     if (!email || !password) {
-      Alert.alert('Erro', 'Preencha email e senha');
+      toast.error('Erro', 'Preencha email e senha');
       return;
     }
     setLoading(true);
@@ -36,7 +37,7 @@ export default function LoginScreen() {
       await signIn(email, password);
       router.replace('/(app)');
     } catch (error) {
-      Alert.alert(
+      toast.error(
         'Erro de login',
         (error as Error).message || 'Falha ao fazer login'
       );

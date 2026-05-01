@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useColors } from '../../../../app/hooks/useColors';
+import { useColors } from '../../hooks/useColors';
 
 const ICONS = ['home', 'egg', 'truck', 'heart', 'film', 'book', 'credit-card', 'briefcase', 'dots-horizontal', 'shopping', 'car', 'medical', 'flight', 'gift', 'star'];
 

@@ -8,20 +8,21 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Alert,
   ScrollView,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRouter, Link} from 'expo-router';
 import {useAuth} from '../../src/presentation/contexts/AuthContext';
-import {useColors} from '../hooks/useColors';
-import {borderRadius} from '../theme/constants';
+import {useToast} from '../../src/presentation/hooks/useToast';
+import {useColors} from '../../src/presentation/hooks/useColors';
+import {borderRadius} from '../../src/presentation/theme/constants';
 
 export default function RegisterScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const {signUp} = useAuth();
+  const {signUp, signIn} = useAuth();
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -29,20 +30,22 @@ export default function RegisterScreen() {
 
   async function handleRegister() {
     if (!email || !password || !fullName) {
-      Alert.alert('Erro', 'Preencha todos os campos');
+      toast.error('Erro', 'Preencha todos os campos');
       return;
     }
     if (password.length < 6) {
-      Alert.alert('Erro', 'Senha deve ter no mínimo 6 caracteres');
+      toast.error('Erro', 'Senha deve ter no mínimo 6 caracteres');
       return;
     }
     setLoading(true);
     try {
       await signUp(email, password, fullName);
-      Alert.alert('Sucesso', 'Conta criada! Faça login.');
-      router.replace('/login');
+      // Auto login after successful sign up
+      await signIn(email, password);
+      toast.success('Sucesso', 'Conta criada com sucesso!');
+      router.replace('/(app)');
     } catch (error) {
-      Alert.alert(
+      toast.error(
         'Erro de cadastro',
         (error as Error).message || 'Falha ao criar conta'
       );

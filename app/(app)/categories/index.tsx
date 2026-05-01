@@ -6,12 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Ionicons} from '@expo/vector-icons';
 import {useColors} from '../../../src/presentation/hooks/useColors';
+import {useToast} from '../../../src/presentation/hooks/useToast';
 import {useCategories} from '../../../src/presentation/hooks/useCategories';
 import {Modal} from '../../../src/presentation/components/ui/Modal';
 import {Input} from '../../../src/presentation/components/ui/Input';
@@ -35,6 +36,7 @@ const COLOR_PALETTE = [
 export default function CategoriesScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
+  const toast = useToast();
   const {categories, loading, create, update, remove, refetch} =
     useCategories();
   const [modalVisible, setModalVisible] = useState(false);
@@ -72,22 +74,34 @@ export default function CategoriesScreen() {
 
   const handleSave = async () => {
     if (!name.trim()) {
-      Alert.alert('Erro', 'Nome é obrigatório');
+      toast.error('Erro', 'Nome é obrigatório');
       return;
     }
     try {
       if (editing) await update(editing.id, name, color, icon);
       else await create(name, color, icon);
       setModalVisible(false);
+      toast.success('Sucesso', editing ? 'Categoria atualizada' : 'Categoria criada');
     } catch (e) {
-      Alert.alert('Erro', (e as Error).message);
+      toast.error('Erro', (e as Error).message);
     }
   };
 
   const handleDelete = (cat: Category) => {
     Alert.alert('Excluir categoria', `Excluir "${cat.name}"?`, [
       {text: 'Cancelar', style: 'cancel'},
-      {text: 'Excluir', style: 'destructive', onPress: () => remove(cat.id)},
+      {
+        text: 'Excluir',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await remove(cat.id);
+            toast.success('Excluído', 'Categoria removida');
+          } catch (e) {
+            toast.error('Erro', (e as Error).message);
+          }
+        }
+      },
     ]);
   };
 

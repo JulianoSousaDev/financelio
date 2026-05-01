@@ -3,7 +3,8 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { AuthProvider, useAuth } from '../src/presentation/contexts/AuthContext';
 import { FamilyProvider } from '../src/presentation/contexts/FamilyContext';
-import { useColors } from './hooks/useColors';
+import { ToastProvider } from '../src/presentation/components/ui/Toast';
+import { useColors } from '../src/presentation/hooks/useColors';
 
 function useProtectedRoute() {
   const { user, loading } = useAuth();
@@ -49,7 +50,9 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <FamilyProvider>
-        <RootLayoutContent />
+        <ToastProvider>
+          <RootLayoutContent />
+        </ToastProvider>
       </FamilyProvider>
     </AuthProvider>
   );
