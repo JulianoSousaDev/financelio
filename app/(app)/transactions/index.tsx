@@ -815,6 +815,8 @@ const styles = StyleSheet.create({
   swipeableContainer: {
     position: 'relative',
     marginBottom: 2,
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   actionsContainer: {
     position: 'absolute',
