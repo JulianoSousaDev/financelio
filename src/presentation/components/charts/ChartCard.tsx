@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
-import { useColors } from '../../../app/hooks/useColors';
+import { useColors } from '../../../../app/hooks/useColors';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
