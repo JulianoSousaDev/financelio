@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import React, { useMemo, useCallback } from 'react';
+import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { ChartCard } from './ChartCard';
 import { useColors } from '../../../../app/hooks/useColors';
@@ -20,9 +20,22 @@ interface PieChartDataItem {
   legendFontSize: number;
 }
 
-export function CategoryPieChart() {
+interface CategoryPieChartProps {
+  onCategoryPress?: (categoryId: string) => void;
+}
+
+export function CategoryPieChart({ onCategoryPress }: CategoryPieChartProps) {
   const colors = useColors();
   const { categoryPieData, loading } = useChartData();
+
+  const handleCategoryPress = useCallback(
+    (categoryId: string) => {
+      if (onCategoryPress && categoryId !== 'others') {
+        onCategoryPress(categoryId);
+      }
+    },
+    [onCategoryPress]
+  );
 
   const chartData = useMemo((): PieChartDataItem[] => {
     if (!categoryPieData.length) return [];
@@ -70,7 +83,12 @@ export function CategoryPieChart() {
             {categoryPieData.map((cat: CategoryPieData, index: number) => {
               const percentage = cat.percentage.toFixed(1);
               return (
-                <View key={cat.categoryId || index} style={styles.legendItem}>
+                <TouchableOpacity
+                  key={cat.categoryId || index}
+                  style={styles.legendItem}
+                  onPress={() => handleCategoryPress(cat.categoryId)}
+                  disabled={cat.categoryId === 'others'}
+                >
                   <View
                     style={[
                       styles.legendColorBox,
@@ -88,7 +106,7 @@ export function CategoryPieChart() {
                       R$ {cat.total.toFixed(2)} ({percentage}%)
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>

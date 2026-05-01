@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams } from 'expo-router';
 import { useColors, useSemanticColors } from '../../hooks/useColors';
 import { TransactionModal } from '../../../src/presentation/components/TransactionModal';
 import { useAuth } from '../../../src/presentation/contexts/AuthContext';
@@ -117,6 +118,7 @@ export default function TransactionsScreen() {
   const { user } = useAuth();
   const { isFamilyMode, familyId } = useFamilyContext();
   const { categories } = useCategories();
+  const { category_id, period, memberId } = useLocalSearchParams<{ category_id?: string; period?: string; memberId?: string }>();
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
@@ -224,6 +226,25 @@ export default function TransactionsScreen() {
       setRefreshing(false);
     }
   }, [user, isFamilyMode, familyId, filterPeriod, filterType, filterCategoryId, filterIsFixed, getDateRange]);
+
+  // Apply URL params to filter state on mount
+  useEffect(() => {
+    if (category_id) {
+      setFilterCategoryId(category_id);
+    }
+    if (period) {
+      // Map period string to FilterPeriod type if needed
+      const periodMap: Record<string, FilterPeriod> = {
+        this_month: 'this_month',
+        last_week: 'last_week',
+        weekly: 'this_month',
+        monthly: 'this_month',
+        yearly: 'this_month',
+      };
+      const mappedPeriod = periodMap[period] || 'this_month';
+      setFilterPeriod(mappedPeriod);
+    }
+  }, [category_id, period]);
 
   useEffect(() => {
     fetchTransactions();
