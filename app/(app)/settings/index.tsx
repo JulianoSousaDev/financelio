@@ -7,6 +7,7 @@ import {
   ScrollView,
   Switch,
   Share,
+  Alert,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
@@ -14,6 +15,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {useColors} from '../../src/presentation/hooks/useColors';
 import {useTheme} from '../../src/presentation/contexts/ThemeContext';
 import {useFamilyMode} from '../../src/presentation/hooks/useFamilyMode';
+import {useAuth} from '../../src/presentation/contexts/AuthContext';
 
 export default function SettingsScreen() {
   const colors = useColors();
@@ -21,6 +23,32 @@ export default function SettingsScreen() {
   const router = useRouter();
   const {isDark, toggleTheme} = useTheme();
   const {isInFamily} = useFamilyMode();
+  const {user, signOut} = useAuth();
+
+  const handleLogout = () => {
+    Alert.alert('Sair da conta', 'Tem certeza que deseja sair da sua conta?', [
+      {text: 'Cancelar', style: 'cancel'},
+      {
+        text: 'Sair',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await signOut();
+          } catch {
+            Alert.alert('Erro', 'Não foi possível sair da conta.');
+          }
+        },
+      },
+    ]);
+  };
+
+  const getInitials = (name: string) => {
+    const parts = name?.split(' ') || [];
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name?.charAt(0)?.toUpperCase() || '?';
+  };
 
   const handleInviteMember = async () => {
     try {
@@ -51,6 +79,21 @@ export default function SettingsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <Text style={[styles.title, {color: colors.text}]}>Configurações</Text>
+
+      {/* Profile Section */}
+      <View style={styles.profileSection}>
+        <View style={[styles.avatar, {backgroundColor: colors.primary}]}>
+          <Text style={styles.avatarText}>
+            {getInitials(user?.user_metadata?.full_name || user?.email || '?')}
+          </Text>
+        </View>
+        <Text style={[styles.userName, {color: colors.text}]}>
+          {user?.user_metadata?.full_name || 'Usuário'}
+        </Text>
+        <Text style={[styles.userEmail, {color: colors.textSecondary}]}>
+          {user?.email}
+        </Text>
+      </View>
 
       {isInFamily && (
         <TouchableOpacity
@@ -125,6 +168,18 @@ export default function SettingsScreen() {
           thumbColor="#FFFFFF"
         />
       </View>
+
+      {/* Logout Button */}
+      <TouchableOpacity
+        style={[styles.logoutButton, {backgroundColor: colors.error + '15'}]}
+        onPress={handleLogout}
+        activeOpacity={0.7}
+      >
+        <Ionicons name="log-out-outline" size={22} color={colors.error} />
+        <Text style={[styles.logoutText, {color: colors.error}]}>
+          Sair da conta
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -139,6 +194,32 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 24,
     letterSpacing: -0.01,
+  },
+  profileSection: {
+    alignItems: 'center',
+    paddingVertical: 24,
+    marginBottom: 8,
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  avatarText: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  userName: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  userEmail: {
+    fontSize: 14,
   },
   menuItem: {
     flexDirection: 'row',
@@ -164,5 +245,18 @@ const styles = StyleSheet.create({
   menuSubtitle: {
     fontSize: 13,
     marginTop: 2,
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginTop: 24,
+  },
+  logoutText: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginLeft: 8,
   },
 });
