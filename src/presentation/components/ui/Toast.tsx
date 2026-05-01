@@ -7,10 +7,10 @@ import React, {
   useRef,
   ReactNode,
 } from 'react';
-import { Animated, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons, IoniconsName } from '@expo/vector-icons';
-import { useColors } from '../hooks/useColors';
-import { darkColors } from '../theme/constants';
+import {Animated, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Ionicons, IoniconsName} from '@expo/vector-icons';
+import {useColors} from '../hooks/useColors';
+import {darkColors} from '../theme/constants';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -37,18 +37,24 @@ const ICONS: Record<ToastType, string> = {
   info: 'information-circle',
 };
 
-const LIGHT_COLORS: Record<ToastType, { bg: string; border: string; icon: string }> = {
-  success: { bg: '#ECFDF5', border: '#10B981', icon: '#10B981' },
-  error: { bg: '#FEF2F2', border: '#EF4444', icon: '#EF4444' },
-  warning: { bg: '#FFFBEB', border: '#F59E0B', icon: '#F59E0B' },
-  info: { bg: '#EFF6FF', border: '#3B82F6', icon: '#3B82F6' },
+const LIGHT_COLORS: Record<
+  ToastType,
+  {bg: string; border: string; icon: string}
+> = {
+  success: {bg: '#ECFDF5', border: '#10B981', icon: '#10B981'},
+  error: {bg: '#FEF2F2', border: '#EF4444', icon: '#EF4444'},
+  warning: {bg: '#FFFBEB', border: '#F59E0B', icon: '#F59E0B'},
+  info: {bg: '#EFF6FF', border: '#3B82F6', icon: '#3B82F6'},
 };
 
-const DARK_COLORS: Record<ToastType, { bg: string; border: string; icon: string }> = {
-  success: { bg: '#0F2F21', border: '#34D399', icon: '#34D399' },
-  error: { bg: '#3B1515', border: '#F87171', icon: '#F87171' },
-  warning: { bg: '#3B2F15', border: '#FBBF24', icon: '#FBBF24' },
-  info: { bg: '#1E3A5F', border: '#60A5FA', icon: '#60A5FA' },
+const DARK_COLORS: Record<
+  ToastType,
+  {bg: string; border: string; icon: string}
+> = {
+  success: {bg: '#0F2F21', border: '#34D399', icon: '#34D399'},
+  error: {bg: '#3B1515', border: '#F87171', icon: '#F87171'},
+  warning: {bg: '#3B2F15', border: '#FBBF24', icon: '#FBBF24'},
+  info: {bg: '#1E3A5F', border: '#60A5FA', icon: '#60A5FA'},
 };
 
 const TOAST_DURATION = 3000;
@@ -60,7 +66,12 @@ interface ToastItemComponentProps {
   onDismiss: () => void;
 }
 
-function ToastItemComponent({ type, title, message, onDismiss }: ToastItemComponentProps) {
+function ToastItemComponent({
+  type,
+  title,
+  message,
+  onDismiss,
+}: ToastItemComponentProps) {
   const colors = useColors();
   const translateY = useRef(new Animated.Value(-100)).current;
   const opacity = useRef(new Animated.Value(0)).current;
@@ -116,7 +127,7 @@ function ToastItemComponent({ type, title, message, onDismiss }: ToastItemCompon
       style={[
         styles.toastContainer,
         {
-          transform: [{ translateY }],
+          transform: [{translateY}],
           opacity,
           backgroundColor: colorSet.bg,
           borderLeftColor: colorSet.border,
@@ -128,13 +139,22 @@ function ToastItemComponent({ type, title, message, onDismiss }: ToastItemCompon
         onPress={dismissToast}
         activeOpacity={0.9}
       >
-        <View style={[styles.iconContainer, { backgroundColor: colorSet.bg, borderColor: colorSet.border }]}>
-          <Ionicons name={ICONS[type] as IoniconsName} size={20} color={colorSet.icon} />
+        <View
+          style={[
+            styles.iconContainer,
+            {backgroundColor: colorSet.bg, borderColor: colorSet.border},
+          ]}
+        >
+          <Ionicons
+            name={ICONS[type] as IoniconsName}
+            size={20}
+            color={colorSet.icon}
+          />
         </View>
         <View style={styles.textContainer}>
-          <Text style={[styles.toastTitle, { color: colors.text }]}>{title}</Text>
+          <Text style={[styles.toastTitle, {color: colors.text}]}>{title}</Text>
           {message && (
-            <Text style={[styles.toastMessage, { color: colors.textSecondary }]}>
+            <Text style={[styles.toastMessage, {color: colors.textSecondary}]}>
               {message}
             </Text>
           )}
@@ -151,36 +171,51 @@ interface ToastProviderProps {
   children: ReactNode;
 }
 
-export function ToastProvider({ children }: ToastProviderProps) {
+export function ToastProvider({children}: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   const dismissToast = useCallback((id: string) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
 
-  const showToast = useCallback((type: ToastType, title: string, message?: string) => {
-    const id = Date.now().toString() + Math.random().toString();
-    setToasts(prev => [...prev, { id, type, title, message }]);
-  }, []);
+  const showToast = useCallback(
+    (type: ToastType, title: string, message?: string) => {
+      const id = Date.now().toString() + Math.random().toString();
+      setToasts(prev => [...prev, {id, type, title, message}]);
+    },
+    []
+  );
 
-  const success = useCallback((title: string, message?: string) => {
-    showToast('success', title, message);
-  }, [showToast]);
+  const success = useCallback(
+    (title: string, message?: string) => {
+      showToast('success', title, message);
+    },
+    [showToast]
+  );
 
-  const error = useCallback((title: string, message?: string) => {
-    showToast('error', title, message);
-  }, [showToast]);
+  const error = useCallback(
+    (title: string, message?: string) => {
+      showToast('error', title, message);
+    },
+    [showToast]
+  );
 
-  const warning = useCallback((title: string, message?: string) => {
-    showToast('warning', title, message);
-  }, [showToast]);
+  const warning = useCallback(
+    (title: string, message?: string) => {
+      showToast('warning', title, message);
+    },
+    [showToast]
+  );
 
-  const info = useCallback((title: string, message?: string) => {
-    showToast('info', title, message);
-  }, [showToast]);
+  const info = useCallback(
+    (title: string, message?: string) => {
+      showToast('info', title, message);
+    },
+    [showToast]
+  );
 
   return (
-    <ToastContext.Provider value={{ success, error, warning, info }}>
+    <ToastContext.Provider value={{success, error, warning, info}}>
       {children}
       <View style={styles.toastWrapper} pointerEvents="box-none">
         {toasts.map(toast => (
@@ -218,9 +253,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 12,
     borderLeftWidth: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
+    shadowColor: '#1F2937',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.12,
     shadowRadius: 12,
     elevation: 8,
     minWidth: 300,

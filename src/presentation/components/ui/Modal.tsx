@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 import {
   Pressable,
   Text,
@@ -9,7 +9,7 @@ import {
   Keyboard,
   BackHandler,
 } from 'react-native';
-import { useColors } from '../../../../app/hooks/useColors';
+import {useColors} from '../../../../app/hooks/useColors';
 
 interface ModalProps {
   visible: boolean;
@@ -68,11 +68,11 @@ export function Modal({
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
-      () => {},
+      () => {}
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
-      () => {},
+      () => {}
     );
     return () => {
       keyboardDidShowListener.remove();
@@ -91,7 +91,7 @@ export function Modal({
 
     const subscription = BackHandler.addEventListener(
       'hardwareBackPress',
-      handleBackPress,
+      handleBackPress
     );
 
     return () => subscription.remove();
@@ -105,18 +105,18 @@ export function Modal({
     <View style={styles.backdrop}>
       <Pressable
         onPress={onClose}
-        style={[styles.backdropPressable, { backgroundColor: colors.overlay }]}
+        style={[styles.backdropPressable, {backgroundColor: colors.overlay}]}
         accessibilityLabel="Fechar modal"
         accessibilityRole="button"
       />
-      
+
       <Animated.View
         ref={modalRef}
         style={[
           styles.container,
           {
             opacity: fadeAnim,
-            transform: [{ scale: scaleAnim }],
+            transform: [{scale: scaleAnim}],
             backgroundColor: colors.surface,
           },
         ]}
@@ -126,18 +126,22 @@ export function Modal({
       >
         <Pressable
           onPress={onClose}
-          style={[styles.closeButton, { backgroundColor: colors.primary }]}
+          style={[styles.closeButton, {backgroundColor: colors.primary}]}
           accessibilityLabel="Fechar"
           accessibilityRole="button"
         >
           <Text style={styles.closeText}>×</Text>
         </Pressable>
-        
+
         <View style={styles.content}>
           {children}
           {isLoading && (
-            <View style={[styles.loadingOverlay, { backgroundColor: colors.overlay }]}>
-              <Text style={[styles.loadingText, { color: colors.text }]}>Carregando...</Text>
+            <View
+              style={[styles.loadingOverlay, {backgroundColor: colors.overlay}]}
+            >
+              <Text style={[styles.loadingText, {color: colors.text}]}>
+                Carregando...
+              </Text>
             </View>
           )}
         </View>
@@ -163,7 +167,7 @@ const styles = StyleSheet.create({
     padding: 24,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
+    shadowOffset: {width: 0, height: 8},
     shadowOpacity: 0.12,
     shadowRadius: 24,
     elevation: 8,
@@ -173,8 +177,8 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: -14,
-    right: -14,
+    top: 16,
+    right: 16,
     width: 32,
     height: 32,
     borderRadius: 16,

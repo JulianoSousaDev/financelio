@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   arrowText: {fontSize: 18},
   monthLabel: {fontSize: 18, fontWeight: '600', marginHorizontal: 24},
-  cardsRow: {flexDirection: 'row', marginBottom: 8},
+  cardsRow: {flexDirection: 'row', gap: 12, marginBottom: 8},
   errorContainer: {
     alignItems: 'center',
     marginTop: 40,

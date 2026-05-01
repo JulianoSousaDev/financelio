@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useColors } from '../../../app/hooks/useColors';
+import {View, Text, StyleSheet} from 'react-native';
+import {useColors} from '../../../app/hooks/useColors';
 
 interface DashboardCardProps {
   title: string;
@@ -8,21 +8,23 @@ interface DashboardCardProps {
   color?: string;
 }
 
-export function DashboardCard({ title, value, color }: DashboardCardProps) {
+export function DashboardCard({title, value, color}: DashboardCardProps) {
   const colors = useColors();
-  
+
   return (
-    <View style={[styles.card, { 
-      backgroundColor: colors.surface,
-      borderColor: colors.border,
-    }]}>
-      <Text style={[styles.cardTitle, { color: colors.textSecondary }]}>{title}</Text>
-      <Text 
-        style={[
-          styles.cardValue, 
-          { color: color || colors.text },
-        ]}
-      >
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: colors.surface,
+          borderColor: colors.border,
+        },
+      ]}
+    >
+      <Text style={[styles.cardTitle, {color: colors.textSecondary}]}>
+        {title}
+      </Text>
+      <Text style={[styles.cardValue, {color: color || colors.text}]}>
         {value}
       </Text>
     </View>
@@ -34,8 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 14,
     padding: 16,
-    marginHorizontal: 4,
-    marginVertical: 6,
     borderWidth: 1,
   },
   cardTitle: {

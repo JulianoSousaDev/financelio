@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, {useState, useCallback, useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,20 @@ import {
   PanResponder,
   ScrollView,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
-import { useColors, useSemanticColors } from '../../src/presentation/hooks/useColors';
-import { useToast } from '../../src/presentation/hooks/useToast';
-import { TransactionModal } from '../../../src/presentation/components/TransactionModal';
-import { useAuth } from '../../../src/presentation/contexts/AuthContext';
-import { useFamilyContext } from '../../../src/presentation/contexts/FamilyContext';
-import { useCategories } from '../../../src/presentation/hooks/useCategories';
-import { Transaction } from '../../../src/shared/types';
-import { supabase } from '../../../src/data/supabase/client';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Ionicons} from '@expo/vector-icons';
+import {useLocalSearchParams} from 'expo-router';
+import {
+  useColors,
+  useSemanticColors,
+} from '../../src/presentation/hooks/useColors';
+import {useToast} from '../../src/presentation/hooks/useToast';
+import {TransactionModal} from '../../../src/presentation/components/TransactionModal';
+import {useAuth} from '../../../src/presentation/contexts/AuthContext';
+import {useFamilyContext} from '../../../src/presentation/contexts/FamilyContext';
+import {useCategories} from '../../../src/presentation/hooks/useCategories';
+import {Transaction} from '../../../src/shared/types';
+import {supabase} from '../../../src/data/supabase/client';
 
 type FilterPeriod = 'this_month' | 'last_week' | 'custom';
 type FilterType = 'all' | 'income' | 'expense';
@@ -33,7 +36,12 @@ interface SwipeableItemProps {
   colors: ReturnType<typeof useColors>;
 }
 
-function SwipeableItem({ children, onEdit, onDelete, colors }: SwipeableItemProps) {
+function SwipeableItem({
+  children,
+  onEdit,
+  onDelete,
+  colors,
+}: SwipeableItemProps) {
   const translateX = React.useRef(new Animated.Value(0)).current;
 
   const panResponder = React.useMemo(
@@ -76,7 +84,7 @@ function SwipeableItem({ children, onEdit, onDelete, colors }: SwipeableItemProp
       {/* Actions revealed on swipe left */}
       <View style={styles.actionsContainer}>
         <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.primary }]}
+          style={[styles.actionButton, {backgroundColor: colors.primary}]}
           onPress={() => {
             closeSwipe();
             onEdit();
@@ -86,7 +94,7 @@ function SwipeableItem({ children, onEdit, onDelete, colors }: SwipeableItemProp
           <Text style={styles.actionText}>Editar</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.danger }]}
+          style={[styles.actionButton, {backgroundColor: colors.danger}]}
           onPress={() => {
             closeSwipe();
             onDelete();
@@ -99,10 +107,7 @@ function SwipeableItem({ children, onEdit, onDelete, colors }: SwipeableItemProp
 
       {/* Main content */}
       <Animated.View
-        style={[
-          { backgroundColor: colors.surface },
-          { transform: [{ translateX }] },
-        ]}
+        style={[{backgroundColor: colors.surface}, {transform: [{translateX}]}]}
         {...panResponder.panHandlers}
       >
         {children}
@@ -116,14 +121,18 @@ export default function TransactionsScreen() {
   const semantic = useSemanticColors();
   const insets = useSafeAreaInsets();
   const toast = useToast();
-  const { user } = useAuth();
-  const { isFamilyMode, familyId } = useFamilyContext();
-  const { categories } = useCategories();
-  const { category_id, period } = useLocalSearchParams<{ category_id?: string; period?: string }>();
+  const {user} = useAuth();
+  const {isFamilyMode, familyId} = useFamilyContext();
+  const {categories} = useCategories();
+  const {category_id, period} = useLocalSearchParams<{
+    category_id?: string;
+    period?: string;
+  }>();
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
-  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [editingTransaction, setEditingTransaction] =
+    useState<Transaction | null>(null);
 
   // Transaction list state
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -138,7 +147,7 @@ export default function TransactionsScreen() {
   const [showFilters, setShowFilters] = useState(false);
 
   // Date range for custom filter
-  const [dateRange] = useState<{ start: Date; end: Date }>({
+  const [dateRange] = useState<{start: Date; end: Date}>({
     start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     end: new Date(),
   });
@@ -176,7 +185,7 @@ export default function TransactionsScreen() {
         start = new Date(now.getFullYear(), now.getMonth(), 1);
         end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     }
-    return { start, end };
+    return {start, end};
   }, [filterPeriod, dateRange]);
 
   const fetchTransactions = useCallback(async () => {
@@ -187,7 +196,7 @@ export default function TransactionsScreen() {
       let query = supabase
         .from('transactions')
         .select('*, categories(*)')
-        .order('date', { ascending: false });
+        .order('date', {ascending: false});
 
       // Apply family mode filter
       if (isFamilyMode && familyId) {
@@ -197,7 +206,7 @@ export default function TransactionsScreen() {
       }
 
       // Apply period filter
-      const { start, end } = getDateRange();
+      const {start, end} = getDateRange();
       query = query
         .gte('date', start.toISOString().split('T')[0])
         .lte('date', end.toISOString().split('T')[0]);
@@ -217,7 +226,7 @@ export default function TransactionsScreen() {
         query = query.eq('is_fixed', filterIsFixed);
       }
 
-      const { data, error } = await query;
+      const {data, error} = await query;
       if (error) throw error;
       setTransactions((data || []) as Transaction[]);
     } catch (error) {
@@ -226,7 +235,16 @@ export default function TransactionsScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [user, isFamilyMode, familyId, filterPeriod, filterType, filterCategoryId, filterIsFixed, getDateRange]);
+  }, [
+    user,
+    isFamilyMode,
+    familyId,
+    filterPeriod,
+    filterType,
+    filterCategoryId,
+    filterIsFixed,
+    getDateRange,
+  ]);
 
   // Apply URL params to filter state on mount
   useEffect(() => {
@@ -262,34 +280,37 @@ export default function TransactionsScreen() {
     }
   }, [fetchTransactions]);
 
-  const handleDelete = useCallback((transaction: Transaction) => {
-    // Show confirmation via toast-like approach - for now keeping Alert for confirmation
-    // since it's a confirmation dialog, not a notification
-    const handleConfirmDelete = async () => {
-      try {
-        const { error } = await supabase
-          .from('transactions')
-          .delete()
-          .eq('id', transaction.id);
+  const handleDelete = useCallback(
+    (transaction: Transaction) => {
+      // Show confirmation via toast-like approach - for now keeping Alert for confirmation
+      // since it's a confirmation dialog, not a notification
+      const handleConfirmDelete = async () => {
+        try {
+          const {error} = await supabase
+            .from('transactions')
+            .delete()
+            .eq('id', transaction.id);
 
-        if (error) throw error;
-        setTransactions(prev => prev.filter(t => t.id !== transaction.id));
-        toast.success('Excluído', 'Transação removida com sucesso');
-      } catch {
-        toast.error('Erro', 'Não foi possível excluir a transação');
-      }
-    };
+          if (error) throw error;
+          setTransactions(prev => prev.filter(t => t.id !== transaction.id));
+          toast.success('Excluído', 'Transação removida com sucesso');
+        } catch {
+          toast.error('Erro', 'Não foi possível excluir a transação');
+        }
+      };
 
-    // For confirmation dialog, we still use Alert since it's a blocking interaction
-    Alert.alert(
-      'Excluir transação',
-      `Excluir "${transaction.description || 'esta transação'}"?`,
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Excluir', style: 'destructive', onPress: handleConfirmDelete },
-      ]
-    );
-  }, [toast]);
+      // For confirmation dialog, we still use Alert since it's a blocking interaction
+      Alert.alert(
+        'Excluir transação',
+        `Excluir "${transaction.description || 'esta transação'}"?`,
+        [
+          {text: 'Cancelar', style: 'cancel'},
+          {text: 'Excluir', style: 'destructive', onPress: handleConfirmDelete},
+        ]
+      );
+    },
+    [toast]
+  );
 
   // Filter badge count
   const activeFilterCount = useMemo(() => {
@@ -301,39 +322,87 @@ export default function TransactionsScreen() {
     return count;
   }, [filterPeriod, filterType, filterCategoryId, filterIsFixed]);
 
-  const renderItem = ({ item }: { item: Transaction }) => (
+  const renderItem = ({item}: {item: Transaction}) => (
     <SwipeableItem
       onEdit={() => openModal(item)}
       onDelete={() => handleDelete(item)}
       colors={colors}
     >
       <TouchableOpacity
-        style={[styles.transactionItem, { borderBottomColor: colors.border }]}
+        style={[styles.transactionItem, {borderBottomColor: colors.border}]}
         onPress={() => openModal(item)}
       >
         <View style={styles.transactionLeft}>
-          <View style={[styles.categoryIcon, { backgroundColor: colors.surfaceSecondary }]}>
+          <View
+            style={[
+              styles.categoryIcon,
+              {backgroundColor: colors.surfaceSecondary},
+            ]}
+          >
             {item.categories?.icon ? (
-              <Ionicons name={item.categories.icon as React.ComponentProps<typeof Ionicons>['name']} size={20} color={item.categories.color || colors.text} />
+              <Ionicons
+                name={
+                  item.categories.icon as React.ComponentProps<
+                    typeof Ionicons
+                  >['name']
+                }
+                size={20}
+                color={item.categories.color || colors.text}
+              />
             ) : (
-              <Ionicons name="help-circle-outline" size={20} color={colors.textDisabled} />
+              <Ionicons
+                name="help-circle-outline"
+                size={20}
+                color={colors.textDisabled}
+              />
             )}
           </View>
           <View style={styles.transactionInfo}>
-            <Text style={[styles.transactionDescription, { color: colors.text }]} numberOfLines={1}>
+            <Text
+              style={[styles.transactionDescription, {color: colors.text}]}
+              numberOfLines={1}
+            >
               {item.description || 'Sem descrição'}
             </Text>
             <View style={styles.transactionMeta}>
               {item.categories && (
                 <View style={styles.categoryBadge}>
-                  <View style={[styles.categoryDot, { backgroundColor: item.categories.color }]} />
-                  <Text style={[styles.categoryBadgeText, { color: colors.textSecondary }]}>
+                  <View
+                    style={[
+                      styles.categoryDot,
+                      {backgroundColor: item.categories.color},
+                    ]}
+                  />
+                  <Text
+                    style={[
+                      styles.categoryBadgeText,
+                      {color: colors.textSecondary},
+                    ]}
+                  >
                     {item.categories.name}
                   </Text>
                 </View>
               )}
-              <View style={[styles.badge, { backgroundColor: item.is_fixed ? colors.primary + '20' : colors.surfaceSecondary }]}>
-                <Text style={[styles.badgeText, { color: item.is_fixed ? colors.primary : colors.textSecondary }]}>
+              <View
+                style={[
+                  styles.badge,
+                  {
+                    backgroundColor: item.is_fixed
+                      ? colors.primary + '20'
+                      : colors.surfaceSecondary,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.badgeText,
+                    {
+                      color: item.is_fixed
+                        ? colors.primary
+                        : colors.textSecondary,
+                    },
+                  ]}
+                >
                   {item.is_fixed ? 'Fixo' : 'Variável'}
                 </Text>
               </View>
@@ -344,12 +413,16 @@ export default function TransactionsScreen() {
           <Text
             style={[
               styles.transactionAmount,
-              { color: item.type === 'income' ? semantic.income : semantic.expense },
+              {
+                color:
+                  item.type === 'income' ? semantic.income : semantic.expense,
+              },
             ]}
           >
-            {item.type === 'income' ? '+' : '-'} R$ {Number(item.amount).toFixed(2).replace('.', ',')}
+            {item.type === 'income' ? '+' : '-'} R${' '}
+            {Number(item.amount).toFixed(2).replace('.', ',')}
           </Text>
-          <Text style={[styles.transactionDate, { color: colors.textSecondary }]}>
+          <Text style={[styles.transactionDate, {color: colors.textSecondary}]}>
             {new Date(item.date).toLocaleDateString('pt-BR')}
           </Text>
         </View>
@@ -357,32 +430,58 @@ export default function TransactionsScreen() {
     </SwipeableItem>
   );
 
-  const ListEmptyComponent = useMemo(() => (
-    <View style={styles.emptyContainer}>
-      <Ionicons name="wallet-outline" size={64} color={colors.textDisabled} />
-      <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
-        Nenhuma transação encontrada
-      </Text>
-      {activeFilterCount > 0 && (
-        <Text style={[styles.emptySubtext, { color: colors.textDisabled }]}>
-          Tente ajustar os filtros
+  const ListEmptyComponent = useMemo(
+    () => (
+      <View style={styles.emptyContainer}>
+        <Ionicons name="wallet-outline" size={64} color={colors.textDisabled} />
+        <Text style={[styles.emptyText, {color: colors.textSecondary}]}>
+          Nenhuma transação encontrada
         </Text>
-      )}
-    </View>
-  ), [colors, activeFilterCount]);
+        {activeFilterCount > 0 && (
+          <Text style={[styles.emptySubtext, {color: colors.textDisabled}]}>
+            Tente ajustar os filtros
+          </Text>
+        )}
+      </View>
+    ),
+    [colors, activeFilterCount]
+  );
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background, paddingBottom: insets.bottom + 80, paddingTop: insets.top + 16 }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.background,
+          paddingBottom: insets.bottom + 80,
+          paddingTop: insets.top + 16,
+          paddingHorizontal: 16,
+        },
+      ]}
+    >
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.text }]}>Transações</Text>
+        <Text style={[styles.title, {color: colors.text}]}>Transações</Text>
         <TouchableOpacity
-          style={[styles.filterButton, { backgroundColor: showFilters ? colors.primary : colors.surfaceSecondary }]}
+          style={[
+            styles.filterButton,
+            {
+              backgroundColor: showFilters
+                ? colors.primary
+                : colors.surfaceSecondary,
+            },
+          ]}
           onPress={() => setShowFilters(!showFilters)}
         >
-          <Ionicons name="filter" size={20} color={showFilters ? '#FFFFFF' : colors.text} />
+          <Ionicons
+            name="filter"
+            size={20}
+            color={showFilters ? '#FFFFFF' : colors.text}
+          />
           {activeFilterCount > 0 && (
-            <View style={[styles.filterBadge, { backgroundColor: colors.danger }]}>
+            <View
+              style={[styles.filterBadge, {backgroundColor: colors.danger}]}
+            >
               <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
             </View>
           )}
@@ -391,23 +490,33 @@ export default function TransactionsScreen() {
 
       {/* Filters */}
       {showFilters && (
-        <View style={[styles.filtersContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View
+          style={[
+            styles.filtersContainer,
+            {backgroundColor: colors.surface, borderColor: colors.border},
+          ]}
+        >
           {/* Period Filter */}
           <View style={styles.filterSection}>
-            <Text style={[styles.filterLabel, { color: colors.textSecondary }]}>Período</Text>
+            <Text style={[styles.filterLabel, {color: colors.textSecondary}]}>
+              Período
+            </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.filterOptions}>
                 {[
-                  { key: 'this_month', label: 'Este mês' },
-                  { key: 'last_week', label: 'Última semana' },
-                  { key: 'custom', label: 'Personalizado' },
+                  {key: 'this_month', label: 'Este mês'},
+                  {key: 'last_week', label: 'Última semana'},
+                  {key: 'custom', label: 'Personalizado'},
                 ].map(opt => (
                   <TouchableOpacity
                     key={opt.key}
                     style={[
                       styles.filterChip,
                       {
-                        backgroundColor: filterPeriod === opt.key ? colors.primary : colors.surfaceSecondary,
+                        backgroundColor:
+                          filterPeriod === opt.key
+                            ? colors.primary
+                            : colors.surfaceSecondary,
                       },
                     ]}
                     onPress={() => setFilterPeriod(opt.key as FilterPeriod)}
@@ -415,7 +524,10 @@ export default function TransactionsScreen() {
                     <Text
                       style={[
                         styles.filterChipText,
-                        { color: filterPeriod === opt.key ? '#FFFFFF' : colors.text },
+                        {
+                          color:
+                            filterPeriod === opt.key ? '#FFFFFF' : colors.text,
+                        },
                       ]}
                     >
                       {opt.label}
@@ -428,19 +540,24 @@ export default function TransactionsScreen() {
 
           {/* Type Filter */}
           <View style={styles.filterSection}>
-            <Text style={[styles.filterLabel, { color: colors.textSecondary }]}>Tipo</Text>
+            <Text style={[styles.filterLabel, {color: colors.textSecondary}]}>
+              Tipo
+            </Text>
             <View style={styles.filterOptions}>
               {[
-                { key: 'all', label: 'Todos' },
-                { key: 'income', label: 'Receitas' },
-                { key: 'expense', label: 'Despesas' },
+                {key: 'all', label: 'Todos'},
+                {key: 'income', label: 'Receitas'},
+                {key: 'expense', label: 'Despesas'},
               ].map(opt => (
                 <TouchableOpacity
                   key={opt.key}
                   style={[
                     styles.filterChip,
                     {
-                      backgroundColor: filterType === opt.key ? colors.primary : colors.surfaceSecondary,
+                      backgroundColor:
+                        filterType === opt.key
+                          ? colors.primary
+                          : colors.surfaceSecondary,
                     },
                   ]}
                   onPress={() => setFilterType(opt.key as FilterType)}
@@ -448,7 +565,7 @@ export default function TransactionsScreen() {
                   <Text
                     style={[
                       styles.filterChipText,
-                      { color: filterType === opt.key ? '#FFFFFF' : colors.text },
+                      {color: filterType === opt.key ? '#FFFFFF' : colors.text},
                     ]}
                   >
                     {opt.label}
@@ -460,14 +577,19 @@ export default function TransactionsScreen() {
 
           {/* Category Filter */}
           <View style={styles.filterSection}>
-            <Text style={[styles.filterLabel, { color: colors.textSecondary }]}>Categoria</Text>
+            <Text style={[styles.filterLabel, {color: colors.textSecondary}]}>
+              Categoria
+            </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.filterOptions}>
                 <TouchableOpacity
                   style={[
                     styles.filterChip,
                     {
-                      backgroundColor: filterCategoryId === null ? colors.primary : colors.surfaceSecondary,
+                      backgroundColor:
+                        filterCategoryId === null
+                          ? colors.primary
+                          : colors.surfaceSecondary,
                     },
                   ]}
                   onPress={() => setFilterCategoryId(null)}
@@ -475,7 +597,10 @@ export default function TransactionsScreen() {
                   <Text
                     style={[
                       styles.filterChipText,
-                      { color: filterCategoryId === null ? '#FFFFFF' : colors.text },
+                      {
+                        color:
+                          filterCategoryId === null ? '#FFFFFF' : colors.text,
+                      },
                     ]}
                   >
                     Todas
@@ -487,16 +612,26 @@ export default function TransactionsScreen() {
                     style={[
                       styles.filterChip,
                       {
-                        backgroundColor: filterCategoryId === cat.id ? colors.primary : colors.surfaceSecondary,
+                        backgroundColor:
+                          filterCategoryId === cat.id
+                            ? colors.primary
+                            : colors.surfaceSecondary,
                       },
                     ]}
                     onPress={() => setFilterCategoryId(cat.id)}
                   >
-                    <View style={[styles.categoryDot, { backgroundColor: cat.color }]} />
+                    <View
+                      style={[styles.categoryDot, {backgroundColor: cat.color}]}
+                    />
                     <Text
                       style={[
                         styles.filterChipText,
-                        { color: filterCategoryId === cat.id ? '#FFFFFF' : colors.text },
+                        {
+                          color:
+                            filterCategoryId === cat.id
+                              ? '#FFFFFF'
+                              : colors.text,
+                        },
                       ]}
                     >
                       {cat.name}
@@ -509,19 +644,24 @@ export default function TransactionsScreen() {
 
           {/* Fixed/Variable Filter */}
           <View style={styles.filterSection}>
-            <Text style={[styles.filterLabel, { color: colors.textSecondary }]}>Fixos/Variáveis</Text>
+            <Text style={[styles.filterLabel, {color: colors.textSecondary}]}>
+              Fixos/Variáveis
+            </Text>
             <View style={styles.filterOptions}>
               {[
-                { key: null, label: 'Todos' },
-                { key: true, label: 'Fixos' },
-                { key: false, label: 'Variáveis' },
+                {key: null, label: 'Todos'},
+                {key: true, label: 'Fixos'},
+                {key: false, label: 'Variáveis'},
               ].map(opt => (
                 <TouchableOpacity
                   key={String(opt.key)}
                   style={[
                     styles.filterChip,
                     {
-                      backgroundColor: filterIsFixed === opt.key ? colors.primary : colors.surfaceSecondary,
+                      backgroundColor:
+                        filterIsFixed === opt.key
+                          ? colors.primary
+                          : colors.surfaceSecondary,
                     },
                   ]}
                   onPress={() => setFilterIsFixed(opt.key as boolean | null)}
@@ -529,7 +669,10 @@ export default function TransactionsScreen() {
                   <Text
                     style={[
                       styles.filterChipText,
-                      { color: filterIsFixed === opt.key ? '#FFFFFF' : colors.text },
+                      {
+                        color:
+                          filterIsFixed === opt.key ? '#FFFFFF' : colors.text,
+                      },
                     ]}
                   >
                     {opt.label}
@@ -545,7 +688,9 @@ export default function TransactionsScreen() {
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="small" color={colors.primary} />
-          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>Carregando...</Text>
+          <Text style={[styles.loadingText, {color: colors.textSecondary}]}>
+            Carregando...
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -566,7 +711,7 @@ export default function TransactionsScreen() {
 
       {/* FAB */}
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: colors.primary }]}
+        style={[styles.fab, {backgroundColor: colors.primary}]}
         onPress={() => openModal()}
         activeOpacity={0.7}
         accessibilityLabel="Adicionar nova transação"
@@ -788,7 +933,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#2563EB',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.4,
     shadowRadius: 12,
     elevation: 4,
