@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financelio — Architecture Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #020617;
+    color: #f8fafc;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .header .dot { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .header p { color: #94a3b8; font-size: 14px; margin-top: 8px; }
+
+  .diagram-card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .diagram-card h2 { font-size: 16px; color: #64748b; margin-bottom: 20px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .card-dot.cyan { background: #22d3ee; }
+  .card-dot.emerald { background: #34d399; }
+  .card-dot.violet { background: #a78bfa; }
+  .card h3 { font-size: 14px; font-weight: 600; }
+  .card ul { list-style: none; }
+  .card li { font-size: 12px; color: #94a3b8; padding: 3px 0; }
+  .card li::before { content: '• '; color: #475569; }
+
+  footer { text-align: center; color: #475569; font-size: 11px; margin-top: 40px; }
+
+  .flow-grid { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 0; align-items: center; }
+  .flow-box { text-align: center; }
+  .flow-arrow { display: flex; flex-direction: column; align-items: center; color: #fbbf24; font-size: 24px; }
+
+  .layer { 
+    border: 1.5px solid; 
+    border-radius: 8px; 
+    padding: 16px; 
+    margin: 8px 0;
+    background: rgba(15, 23, 42, 0.8);
+  }
+  .layer h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .layer .tech { font-size: 11px; color: #94a3b8; line-height: 1.6; }
+  .layer.frontend { border-color: #22d3ee; background: rgba(8,51,68,0.3); }
+  .layer.frontend h4 { color: #22d3ee; }
+  .layer.backend { border-color: #34d399; background: rgba(6,78,59,0.3); }
+  .layer.backend h4 { color: #34d399; }
+  .layer.database { border-color: #a78bfa; background: rgba(76,29,149,0.3); }
+  .layer.database h4 { color: #a78bfa; }
+  .layer.cloud { border-color: #fbbf24; background: rgba(120,53,15,0.2); }
+  .layer.cloud h4 { color: #fbbf24; }
+
+  .arrow-label { font-size: 10px; color: #64748b; text-align: center; margin: 4px 0; }
+  .divider { border: none; border-top: 1px dashed #334155; margin: 24px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1><span class="dot"></span> Financelio — Architecture</h1>
+    <p>React Native / Expo · Supabase · TypeScript</p>
+  </div>
+
+  <!-- Main Diagram -->
+  <div class="diagram-card">
+    <h2>🏗️ System Architecture</h2>
+    <div class="flow-grid">
+      <!-- Frontend Column -->
+      <div class="flow-box">
+        <div class="layer frontend">
+          <h4>📱 React Native App</h4>
+          <div class="tech">
+            Expo SDK 54 · RN 0.81 · Hermes<br>
+            Expo Router (file-based)<br>
+            TypeScript 5.9
+          </div>
+        </div>
+        <div class="layer frontend">
+          <h4>🧩 Presentation Layer</h4>
+          <div class="tech">
+            Modal · Input · Button · DashboardCard<br>
+            StyleSheet (NativeWind disabled)<br>
+            Ionicons
+          </div>
+        </div>
+        <div class="layer frontend">
+          <h4>🎣 State Management</h4>
+          <div class="tech">
+            AuthContext (React Context)<br>
+            useCategories · useMonthlySummary<br>
+            useState · useCallback · useMemo
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow Column -->
+      <div class="flow-arrow">
+        <div style="color:#fbbf24; font-size:28px;">↔</div>
+        <div class="arrow-label">Supabase JS SDK</div>
+        <div class="arrow-label">REST API</div>
+        <div class="arrow-label">PostgREST</div>
+        <div style="color:#fbbf24; font-size:28px;">↔</div>
+      </div>
+
+      <!-- Backend Column -->
+      <div class="flow-box">
+        <div class="layer cloud">
+          <h4>☁️ Supabase Cloud</h4>
+          <div class="tech">
+            Project: czdmuilzwoglkiewqhmu<br>
+            us-east-1 · IPv6
+          </div>
+        </div>
+        <div class="layer backend">
+          <h4>🔐 Auth Service</h4>
+          <div class="tech">
+            Email/Password · JWT<br>
+            Row Level Security (RLS)<br>
+            Session Management
+          </div>
+        </div>
+        <div class="layer database">
+          <h4>🗄️ PostgreSQL Database</h4>
+          <div class="tech">
+            <b>Tables:</b><br>
+            · categories (CRUD + seed)<br>
+            · transactions (insert/select)<br>
+            <b>RPC:</b> monthly_summary()
+          </div>
+        </div>
+        <div class="layer database">
+          <h4>🔒 Row Level Security</h4>
+          <div class="tech">
+            Users can CRUD own data<br>
+            Policies: auth.uid() = user_id
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow Diagram -->
+  <div class="diagram-card">
+    <h2>🔄 Data Flow</h2>
+    <div style="display:flex; flex-direction:column; gap:12px; padding: 8px 0;">
+      <div class="layer frontend" style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">1️⃣</span>
+        <div>
+          <h4>User opens Dashboard</h4>
+          <div class="tech">useMonthlySummary(month, year) → supabase.rpc('monthly_summary') → PostgreSQL</div>
+        </div>
+      </div>
+      <div style="text-align:center; color:#475569; font-size:20px;">↓</div>
+      <div class="layer backend" style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">2️⃣</span>
+        <div>
+          <h4>Supabase processes RPC</h4>
+          <div class="tech">monthly_summary(month, year, user_id) → SELECT SUM(amount) FROM transactions</div>
+        </div>
+      </div>
+      <div style="text-align:center; color:#475569; font-size:20px;">↓</div>
+      <div class="layer frontend" style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">3️⃣</span>
+        <div>
+          <h4>DashboardCard renders results</h4>
+          <div class="tech">{ total_income, total_expense, net_balance } → Cards (green/red)</div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="layer frontend" style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">4️⃣</span>
+        <div>
+          <h4>User adds transaction</h4>
+          <div class="tech">Modal → Input validation → supabase.from('transactions').insert()</div>
+        </div>
+      </div>
+      <div style="text-align:center; color:#475569; font-size:20px;">↓</div>
+      <div class="layer database" style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">5️⃣</span>
+        <div>
+          <h4>RLS check then INSERT</h4>
+          <div class="tech">RLS: auth.uid() = user_id → INSERT INTO transactions → fetchTransactions() refresh</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Cards -->
+  <div class="cards">
+    <div class="card">
+      <div class="card-header"><div class="card-dot cyan"></div><h3>Frontend</h3></div>
+      <ul>
+        <li>React Native 0.81 + Expo 54</li>
+        <li>Expo Router (file-based)</li>
+        <li>TypeScript 5.9 strict</li>
+        <li>StyleSheet (NativeWind off)</li>
+        <li>Hermes Engine (bytecode)</li>
+        <li>AuthContext (React Context)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot emerald"></div><h3>Backend (Supabase)</h3></div>
+      <ul>
+        <li>PostgreSQL 15</li>
+        <li>PostgREST API</li>
+        <li>Auth (email/password)</li>
+        <li>Row Level Security</li>
+        <li>RPC: monthly_summary()</li>
+        <li>Real-time (not used yet)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot violet"></div><h3>Database Schema</h3></div>
+      <ul>
+        <li>categories (id, name, color, icon)</li>
+        <li>transactions (type, amount, date)</li>
+        <li>RLS: auth.uid() = user_id</li>
+        <li>Indexes: user_id, date</li>
+        <li>UUID primary keys</li>
+        <li>Foreign keys with CASCADE</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    Financelio v1.0.0 · Built with React Native + Supabase · Generated by Hermes
+  </footer>
+</div>
+</body>
+</html>

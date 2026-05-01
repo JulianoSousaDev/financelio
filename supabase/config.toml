@@ -1,0 +1,4 @@
+project_id = "czdmuilzwoglkiewqhmu"
+
+[db]
+# Connection string will be set via environment variable

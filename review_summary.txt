@@ -1,0 +1,1 @@
+Review completed. Changes made: 1) Added useCallback to create/update/remove in useCategories.ts for performance. 2) Improved CategoryIconSelector.tsx: replaced text icons with Ionicons, added accessibilityLabel for accessibility, and improved UX with actual icons.

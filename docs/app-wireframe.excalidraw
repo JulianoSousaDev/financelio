@@ -1,0 +1,414 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "x": 480, "y": 20,
+      "width": 300, "height": 35,
+      "text": "Financelio — Design Overview",
+      "fontSize": 28, "fontFamily": 1,
+      "strokeColor": "#f8fafc",
+      "originalText": "Financelio — Design Overview",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "screen1_bg",
+      "x": 40, "y": 80, "width": 260, "height": 480,
+      "backgroundColor": "#0f172a", "fillStyle": "solid",
+      "strokeColor": "#334155", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s1_title", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s1_title",
+      "x": 50, "y": 88, "width": 240, "height": 22,
+      "text": "📊 Dashboard",
+      "fontSize": 18, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "screen1_bg", "originalText": "📊 Dashboard",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s1_month",
+      "x": 60, "y": 120, "width": 220, "height": 30,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#475569", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s1_month_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s1_month_txt",
+      "x": 65, "y": 126, "width": 210, "height": 18,
+      "text": "◀  Abril 2026  ▶",
+      "fontSize": 16, "fontFamily": 1,
+      "strokeColor": "#94a3b8", "textAlign": "center",
+      "containerId": "s1_month", "originalText": "◀  Abril 2026  ▶",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s1_card1",
+      "x": 60, "y": 170, "width": 105, "height": 65,
+      "backgroundColor": "#064e3b", "fillStyle": "solid",
+      "strokeColor": "#22c55e", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s1_card1_label", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s1_card1_label",
+      "x": 65, "y": 178, "width": 95, "height": 50,
+      "text": "Receitas\nR$ 500",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s1_card1", "originalText": "Receitas\nR$ 500",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s1_card2",
+      "x": 175, "y": 170, "width": 105, "height": 65,
+      "backgroundColor": "#7f1d1d", "fillStyle": "solid",
+      "strokeColor": "#ef4444", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s1_card2_label", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s1_card2_label",
+      "x": 180, "y": 178, "width": 95, "height": 50,
+      "text": "Despesas\nR$ 200",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s1_card2", "originalText": "Despesas\nR$ 200",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s1_card3",
+      "x": 60, "y": 250, "width": 220, "height": 50,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#22c55e", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s1_card3_label", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s1_card3_label",
+      "x": 65, "y": 260, "width": 210, "height": 30,
+      "text": "Saldo Líquido: +R$ 300",
+      "fontSize": 16, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s1_card3", "originalText": "Saldo Líquido: +R$ 300",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "screen2_bg",
+      "x": 330, "y": 80, "width": 260, "height": 480,
+      "backgroundColor": "#0f172a", "fillStyle": "solid",
+      "strokeColor": "#334155", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s2_title", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s2_title",
+      "x": 340, "y": 88, "width": 240, "height": 22,
+      "text": "💰 Transações",
+      "fontSize": 18, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "screen2_bg", "originalText": "💰 Transações",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s2_item1",
+      "x": 350, "y": 120, "width": 220, "height": 45,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#475569", "roundness": { "type": 2 },
+      "boundElements": [{ "id": "s2_item1_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s2_item1_txt",
+      "x": 355, "y": 126, "width": 210, "height": 34,
+      "text": "30/04  Gasolina  -R$ 25",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s2_item1", "originalText": "30/04  Gasolina  -R$ 25",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s2_item2",
+      "x": 350, "y": 175, "width": 220, "height": 45,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#475569", "roundness": { "type": 2 },
+      "boundElements": [{ "id": "s2_item2_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s2_item2_txt",
+      "x": 355, "y": 181, "width": 210, "height": 34,
+      "text": "29/04  Salário  +R$ 5.000",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s2_item2", "originalText": "29/04  Salário  +R$ 5.000",
+      "autoResize": true
+    },
+    {
+      "type": "ellipse",
+      "id": "s2_fab",
+      "x": 520, "y": 490, "width": 50, "height": 50,
+      "backgroundColor": "#6366f1", "fillStyle": "solid",
+      "strokeColor": "#818cf8",
+      "boundElements": [{ "id": "s2_fab_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s2_fab_txt",
+      "x": 528, "y": 498, "width": 34, "height": 34,
+      "text": "+",
+      "fontSize": 28, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s2_fab", "originalText": "+",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "screen3_bg",
+      "x": 620, "y": 80, "width": 260, "height": 480,
+      "backgroundColor": "#0f172a", "fillStyle": "solid",
+      "strokeColor": "#334155", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s3_title", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s3_title",
+      "x": 630, "y": 88, "width": 240, "height": 22,
+      "text": "🏷️ Categorias",
+      "fontSize": 18, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "screen3_bg", "originalText": "🏷️ Categorias",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s3_item1",
+      "x": 640, "y": 120, "width": 220, "height": 35,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#475569", "roundness": { "type": 2 },
+      "boundElements": [{ "id": "s3_item1_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s3_item1_txt",
+      "x": 645, "y": 126, "width": 210, "height": 22,
+      "text": "🔴 Alimentação    🗑",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s3_item1", "originalText": "🔴 Alimentação    🗑",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s3_item2",
+      "x": 640, "y": 165, "width": 220, "height": 35,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#475569", "roundness": { "type": 2 },
+      "boundElements": [{ "id": "s3_item2_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s3_item2_txt",
+      "x": 645, "y": 171, "width": 210, "height": 22,
+      "text": "🟢 Salário        🗑",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s3_item2", "originalText": "🟢 Salário        🗑",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "s3_item3",
+      "x": 640, "y": 210, "width": 220, "height": 35,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#475569", "roundness": { "type": 2 },
+      "boundElements": [{ "id": "s3_item3_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s3_item3_txt",
+      "x": 645, "y": 216, "width": 210, "height": 22,
+      "text": "🟠 Transporte     🗑",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s3_item3", "originalText": "🟠 Transporte     🗑",
+      "autoResize": true
+    },
+    {
+      "type": "ellipse",
+      "id": "s3_fab",
+      "x": 810, "y": 490, "width": 50, "height": 50,
+      "backgroundColor": "#6366f1", "fillStyle": "solid",
+      "strokeColor": "#818cf8",
+      "boundElements": [{ "id": "s3_fab_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s3_fab_txt",
+      "x": 818, "y": 498, "width": 34, "height": 34,
+      "text": "+",
+      "fontSize": 28, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "s3_fab", "originalText": "+",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "screen4_bg",
+      "x": 910, "y": 80, "width": 260, "height": 480,
+      "backgroundColor": "#0f172a", "fillStyle": "solid",
+      "strokeColor": "#334155", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "s4_title", "type": "text" }, { "id": "s4_placeholder", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "s4_title",
+      "x": 920, "y": 88, "width": 240, "height": 22,
+      "text": "🎯 Metas",
+      "fontSize": 18, "fontFamily": 1,
+      "strokeColor": "#f8fafc", "textAlign": "center",
+      "containerId": "screen4_bg", "originalText": "🎯 Metas",
+      "autoResize": true
+    },
+    {
+      "type": "text",
+      "id": "s4_placeholder",
+      "x": 960, "y": 290, "width": 160, "height": 40,
+      "text": "Em breve",
+      "fontSize": 22, "fontFamily": 1,
+      "strokeColor": "#94a3b8", "textAlign": "center",
+      "containerId": "screen4_bg", "originalText": "Em breve",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "tabbar",
+      "x": 40, "y": 565, "width": 1130, "height": 50,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#475569", "roundness": { "type": 3 },
+      "boundElements": [{ "id": "tabbar_txt", "type": "text" }]
+    },
+    {
+      "type": "text",
+      "id": "tabbar_txt",
+      "x": 50, "y": 578, "width": 1110, "height": 24,
+      "text": "📊 Dashboard         💰 Transações         🏷️ Categorias         🎯 Metas",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#94a3b8", "textAlign": "center",
+      "containerId": "tabbar", "originalText": "📊 Dashboard         💰 Transações         🏷️ Categorias         🎯 Metas",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "legend_bg",
+      "x": 40, "y": 630, "width": 1130, "height": 80,
+      "backgroundColor": "#1e293b", "fillStyle": "solid",
+      "strokeColor": "#334155", "roundness": { "type": 3 }
+    },
+    {
+      "type": "text",
+      "id": "legend_title",
+      "x": 500, "y": 640, "width": 210, "height": 20,
+      "text": "🎨 Design System",
+      "fontSize": 16, "fontFamily": 1,
+      "strokeColor": "#f8fafc",
+      "originalText": "🎨 Design System",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "color1",
+      "x": 80, "y": 665, "width": 20, "height": 20,
+      "backgroundColor": "#0f172a", "fillStyle": "solid",
+      "strokeColor": "#334155", "roundness": { "type": 2 }
+    },
+    {
+      "type": "text",
+      "id": "color1_label",
+      "x": 105, "y": 666, "width": 60, "height": 18,
+      "text": "Fundo",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#94a3b8",
+      "originalText": "Fundo",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "color2",
+      "x": 200, "y": 665, "width": 20, "height": 20,
+      "backgroundColor": "#6366f1", "fillStyle": "solid",
+      "strokeColor": "#818cf8", "roundness": { "type": 2 }
+    },
+    {
+      "type": "text",
+      "id": "color2_label",
+      "x": 225, "y": 666, "width": 60, "height": 18,
+      "text": "Primary",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#94a3b8",
+      "originalText": "Primary",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "color3",
+      "x": 320, "y": 665, "width": 20, "height": 20,
+      "backgroundColor": "#22c55e", "fillStyle": "solid",
+      "strokeColor": "#4ade80", "roundness": { "type": 2 }
+    },
+    {
+      "type": "text",
+      "id": "color3_label",
+      "x": 345, "y": 666, "width": 60, "height": 18,
+      "text": "Receita",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#94a3b8",
+      "originalText": "Receita",
+      "autoResize": true
+    },
+    {
+      "type": "rectangle",
+      "id": "color4",
+      "x": 440, "y": 665, "width": 20, "height": 20,
+      "backgroundColor": "#ef4444", "fillStyle": "solid",
+      "strokeColor": "#f87171", "roundness": { "type": 2 }
+    },
+    {
+      "type": "text",
+      "id": "color4_label",
+      "x": 465, "y": 666, "width": 60, "height": 18,
+      "text": "Despesa",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#94a3b8",
+      "originalText": "Despesa",
+      "autoResize": true
+    },
+    {
+      "type": "text",
+      "id": "footer",
+      "x": 350, "y": 720, "width": 500, "height": 20,
+      "text": "React Native 0.81  ·  Expo SDK 54  ·  Supabase  ·  TypeScript",
+      "fontSize": 14, "fontFamily": 1,
+      "strokeColor": "#475569",
+      "originalText": "React Native 0.81  ·  Expo SDK 54  ·  Supabase  ·  TypeScript",
+      "autoResize": true
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#0f172a"
+  }
+}

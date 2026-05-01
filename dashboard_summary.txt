@@ -1,0 +1,22 @@
+Summary of work done:
+
+1. Created `src/data/supabase/monthlySummary.ts` with the RPC call function fetchMonthlySummary.
+2. Created `src/presentation/hooks/useMonthlySummary.ts` hook that provides data, loading, error, and refetch.
+3. Created `src/presentation/components/DashboardCard.tsx` component with props title, value, color, and fallback for colors.card.
+4. Modified `app/(app)/index.tsx` to replace the placeholder with the functional dashboard including:
+   - Title "Dashboard"
+   - Month selector with ◀ and ▶ buttons
+   - Three DashboardCards for Receitas (green), Despesas (red), and Saldo Líquido (conditional color)
+   - Loading state with ActivityIndicator
+   - Error state with "Tentar novamente" button
+   - Currency formatting in R$ with comma decimal separator
+   - Added fallbacks for theme colors: colors.card defaults to '#1E293B', colors.error defaults to '#ef4444'
+
+All files are in the correct locations within the Financelio project at /mnt/c/Users/Juliano/Desktop/financelio/.
+
+The implementation follows the plan provided by Ana Analista and meets the acceptance criteria:
+- [x] 3 cards: Receitas, Despesas, Saldo Líquido
+- [x] Navegação entre meses com ◀ ▶
+- [x] Loading com ActivityIndicator
+- [x] Error state com "Tentar novamente"
+- [x] Valores formatados em R$ com vírgula

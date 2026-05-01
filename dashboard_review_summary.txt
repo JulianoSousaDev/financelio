@@ -1,0 +1,17 @@
+Revisão do Dashboard Funcional concluída.
+
+Arquivos verificados:
+1. src/data/supabase/monthlySummary.ts - RPC call com parâmetros corretos (p_user_id, p_month, p_year)
+2. src/presentation/hooks/useMonthlySummary.ts - hook com useEffect seguro (sem loop infinito)
+3. src/presentation/components/DashboardCard.tsx - componente com fallback para colors.card
+4. app/(app)/index.tsx - dashboard com seletor de mês (◀ ▶), ActivityIndicator, estado de erro com retry, 3 cards formatados
+
+Critérios atendidos:
+- [x] 3 cards com cores corretas
+- [x] Navegação entre meses
+- [x] Loading e Error states
+- [x] Valores R$ formatados com vírgula decimal
+
+Status: Aprovado ✅
+
+Detalhes completos em: review_summary.md
