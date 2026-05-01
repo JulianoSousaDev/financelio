@@ -93,3 +93,42 @@ export interface FinancialInsight {
   priority: 'low' | 'medium' | 'high';
   data?: Record<string, unknown>;
 }
+
+// Chart types for dashboard graphs
+export type ChartPeriod = 'weekly' | 'monthly' | 'yearly';
+
+export interface ChartFilter {
+  period: ChartPeriod;
+  memberId?: string;
+  categoryId?: string;
+  month: number;
+  year: number;
+}
+
+export interface ChartDataPoint {
+  label: string;
+  value: number;
+  color?: string;
+}
+
+export interface ProjectionData {
+  labels: string[];
+  income: number[];
+  expense: number[];
+  projectedIncome: number[];
+  projectedExpense: number[];
+}
+
+export interface ComparisonData {
+  current: number;
+  previous: number;
+  changePercent: number;
+}
+
+export interface CategoryPieData {
+  categoryId: string;
+  categoryName: string;
+  categoryColor: string;
+  total: number;
+  percentage: number;
+}
