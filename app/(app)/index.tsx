@@ -1,30 +1,52 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { DashboardCard } from '../../src/presentation/components/DashboardCard';
-import { useMonthlySummary } from '../../src/presentation/hooks/useMonthlySummary';
-import { ChartFilters } from '../../src/presentation/components/charts/ChartFilters';
-import { SpendingProjectionChart } from '../../src/presentation/components/charts/SpendingProjectionChart';
-import { MonthlyComparisonChart } from '../../src/presentation/components/charts/MonthlyComparisonChart';
-import { CategoryPieChart } from '../../src/presentation/components/charts/CategoryPieChart';
-import { useChartFilters } from '../../src/hooks/useChartFilters';
-import { useFamilyContext } from '../../src/presentation/contexts/FamilyContext';
-import { useColors, useSemanticColors } from '../../src/presentation/hooks/useColors';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useRouter} from 'expo-router';
+import {DashboardCard} from '../../src/presentation/components/DashboardCard';
+import {useMonthlySummary} from '../../src/presentation/hooks/useMonthlySummary';
+import {ChartFilters} from '../../src/presentation/components/charts/ChartFilters';
+import {SpendingProjectionChart} from '../../src/presentation/components/charts/SpendingProjectionChart';
+import {MonthlyComparisonChart} from '../../src/presentation/components/charts/MonthlyComparisonChart';
+import {CategoryPieChart} from '../../src/presentation/components/charts/CategoryPieChart';
+import {useChartFilters} from '../../src/hooks/useChartFilters';
+import {
+  useColors,
+  useSemanticColors,
+} from '../../src/presentation/hooks/useColors';
 
-const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MONTHS = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
+];
 
 export default function DashboardScreen() {
   const colors = useColors();
   const semantic = useSemanticColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { isInFamily: _isInFamily } = useFamilyContext();
-  const { filter } = useChartFilters();
+  const {filter} = useChartFilters();
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
-  const { data, loading, error, refetch } = useMonthlySummary(month, year);
+  const {data, loading, error, refetch} = useMonthlySummary(month, year);
   const [refreshing, setRefreshing] = useState(false);
 
   const handleRefresh = useCallback(async () => {
@@ -39,16 +61,20 @@ export default function DashboardScreen() {
   }, [refetch]);
 
   const prevMonth = () => {
-    if (month === 1) { setMonth(12); setYear(y => y - 1); }
-    else setMonth(m => m - 1);
+    if (month === 1) {
+      setMonth(12);
+      setYear(y => y - 1);
+    } else setMonth(m => m - 1);
   };
 
   const nextMonth = () => {
-    if (month === 12) { setMonth(1); setYear(y => y + 1); }
-    else setMonth(m => m + 1);
+    if (month === 12) {
+      setMonth(1);
+      setYear(y => y + 1);
+    } else setMonth(m => m + 1);
   };
 
-  const formatCurrency = (val: number) => 
+  const formatCurrency = (val: number) =>
     'R$ ' + (val || 0).toFixed(2).replace('.', ',');
 
   const handleCategoryPress = (categoryId: string) => {
@@ -57,7 +83,7 @@ export default function DashboardScreen() {
     };
     if (filter.period) params.period = filter.period;
     if (filter.memberId) params.memberId = filter.memberId;
-    
+
     router.push({
       pathname: '/(app)/transactions',
       params,
@@ -65,7 +91,16 @@ export default function DashboardScreen() {
   };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.background, paddingBottom: insets.bottom + 16, paddingTop: insets.top + 16 }]}
+    <ScrollView
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.background,
+          paddingBottom: insets.bottom + 16,
+          paddingTop: insets.top + 16,
+        },
+      ]}
+      showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -74,16 +109,24 @@ export default function DashboardScreen() {
         />
       }
     >
-      <Text style={[styles.title, { color: colors.text }]}>Dashboard</Text>
-      
+      <Text style={[styles.title, {color: colors.text}]}>Dashboard</Text>
+
       {/* Month selector */}
       <View style={styles.monthSelector}>
-        <TouchableOpacity onPress={prevMonth} style={[styles.arrow, { backgroundColor: colors.surfaceSecondary }]}>
-          <Text style={[styles.arrowText, { color: colors.primary }]}>◀</Text>
+        <TouchableOpacity
+          onPress={prevMonth}
+          style={[styles.arrow, {backgroundColor: colors.surfaceSecondary}]}
+        >
+          <Text style={[styles.arrowText, {color: colors.primary}]}>◀</Text>
         </TouchableOpacity>
-        <Text style={[styles.monthLabel, { color: colors.text }]}>{MONTHS[month-1]} {year}</Text>
-        <TouchableOpacity onPress={nextMonth} style={[styles.arrow, { backgroundColor: colors.surfaceSecondary }]}>
-          <Text style={[styles.arrowText, { color: colors.primary }]}>▶</Text>
+        <Text style={[styles.monthLabel, {color: colors.text}]}>
+          {MONTHS[month - 1]} {year}
+        </Text>
+        <TouchableOpacity
+          onPress={nextMonth}
+          style={[styles.arrow, {backgroundColor: colors.surfaceSecondary}]}
+        >
+          <Text style={[styles.arrowText, {color: colors.primary}]}>▶</Text>
         </TouchableOpacity>
       </View>
 
@@ -91,12 +134,25 @@ export default function DashboardScreen() {
       <ChartFilters />
 
       {loading ? (
-        <ActivityIndicator size="large" color={colors.primary} style={styles.loader} />
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={styles.loader}
+        />
       ) : error ? (
-        <View style={[styles.errorContainer, { backgroundColor: colors.dangerBackground }]}>
-          <Text style={[styles.errorText, { color: colors.danger }]}>Erro ao carregar</Text>
+        <View
+          style={[
+            styles.errorContainer,
+            {backgroundColor: colors.dangerBackground},
+          ]}
+        >
+          <Text style={[styles.errorText, {color: colors.danger}]}>
+            Erro ao carregar
+          </Text>
           <TouchableOpacity onPress={refetch}>
-            <Text style={[styles.retryText, { color: colors.primary }]}>Tentar novamente</Text>
+            <Text style={[styles.retryText, {color: colors.primary}]}>
+              Tentar novamente
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -117,7 +173,11 @@ export default function DashboardScreen() {
             <DashboardCard
               title="Saldo Líquido"
               value={formatCurrency(data?.net_balance ?? 0)}
-              color={data?.net_balance && data?.net_balance >= 0 ? semantic.income : semantic.expense}
+              color={
+                data?.net_balance && data?.net_balance >= 0
+                  ? semantic.income
+                  : semantic.expense
+              }
             />
           </View>
 
@@ -132,15 +192,37 @@ export default function DashboardScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-  title: { fontSize: 24, fontWeight: '700', marginBottom: 16, letterSpacing: -0.01 },
-  monthSelector: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-  arrow: { padding: 12, borderRadius: 9999, minWidth: 44, minHeight: 44, justifyContent: 'center', alignItems: 'center' },
-  arrowText: { fontSize: 18 },
-  monthLabel: { fontSize: 18, fontWeight: '600', marginHorizontal: 24 },
-  cardsRow: { flexDirection: 'row', marginBottom: 8 },
-  errorContainer: { alignItems: 'center', marginTop: 40, padding: 16, borderRadius: 14 },
-  errorText: { fontSize: 16 },
-  retryText: { fontSize: 16, marginTop: 8 },
-  loader: { marginTop: 40 },
+  container: {flex: 1, padding: 16},
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 16,
+    letterSpacing: -0.01,
+  },
+  monthSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  arrow: {
+    padding: 12,
+    borderRadius: 9999,
+    minWidth: 44,
+    minHeight: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  arrowText: {fontSize: 18},
+  monthLabel: {fontSize: 18, fontWeight: '600', marginHorizontal: 24},
+  cardsRow: {flexDirection: 'row', marginBottom: 8},
+  errorContainer: {
+    alignItems: 'center',
+    marginTop: 40,
+    padding: 16,
+    borderRadius: 14,
+  },
+  errorText: {fontSize: 16},
+  retryText: {fontSize: 16, marginTop: 8},
+  loader: {marginTop: 40},
 });

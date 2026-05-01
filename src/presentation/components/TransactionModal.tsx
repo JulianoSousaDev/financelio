@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,29 @@ import {
   ScrollView,
   Modal,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useColors } from '../hooks/useColors';
-import { Modal as CustomModal } from './ui/Modal';
-import { Input } from './ui/Input';
-import { useCategories } from '../hooks/useCategories';
-import { useFamilyMode } from '../hooks/useFamilyMode';
-import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../../data/supabase/client';
-import type { Transaction } from '../../shared/types';
+import {Ionicons} from '@expo/vector-icons';
+import {useColors} from '../hooks/useColors';
+import {Modal as CustomModal} from './ui/Modal';
+import {Input} from './ui/Input';
+import {CategoryIconSelector} from './ui/CategoryIconSelector';
+import {useCategories} from '../hooks/useCategories';
+import {useFamilyMode} from '../hooks/useFamilyMode';
+import {useAuth} from '../contexts/AuthContext';
+import {supabase} from '../../data/supabase/client';
+import type {Transaction} from '../../shared/types';
+
+const COLOR_PALETTE = [
+  '#EF4444',
+  '#F97316',
+  '#EAB308',
+  '#22C55E',
+  '#10B981',
+  '#06B6D4',
+  '#3B82F6',
+  '#8B5CF6',
+  '#EC4899',
+  '#6B7280',
+];
 
 interface TransactionModalProps {
   visible: boolean;
@@ -37,13 +51,26 @@ function SimpleDatePicker({
   const [showPicker, setShowPicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(value);
 
-  const years = Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i);
+  const years = Array.from(
+    {length: 5},
+    (_, i) => new Date().getFullYear() - 2 + i
+  );
   const months = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
   ];
 
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const days = Array.from({length: 31}, (_, i) => i + 1);
 
   const handleConfirm = () => {
     onChange(selectedDate);
@@ -53,38 +80,66 @@ function SimpleDatePicker({
   return (
     <>
       <TouchableOpacity
-        style={[styles.dateButton, { backgroundColor: colors.surface, borderColor: colors.border }]}
+        style={[
+          styles.dateButton,
+          {backgroundColor: colors.surface, borderColor: colors.border},
+        ]}
         onPress={() => setShowPicker(true)}
       >
         <Ionicons name="calendar-outline" size={20} color={colors.text} />
-        <Text style={[styles.dateText, { color: colors.text }]}>
+        <Text style={[styles.dateText, {color: colors.text}]}>
           {value.toLocaleDateString('pt-BR')}
         </Text>
       </TouchableOpacity>
 
       <Modal visible={showPicker} transparent animationType="fade">
         <TouchableOpacity
-          style={[styles.pickerOverlay, { backgroundColor: colors.overlay }]}
+          style={[styles.pickerOverlay, {backgroundColor: colors.overlay}]}
           activeOpacity={1}
           onPress={() => setShowPicker(false)}
         >
-          <View style={[styles.pickerContainer, { backgroundColor: colors.surface }]}>
-            <Text style={[styles.pickerTitle, { color: colors.text }]}>Selecione a data</Text>
+          <View
+            style={[styles.pickerContainer, {backgroundColor: colors.surface}]}
+          >
+            <Text style={[styles.pickerTitle, {color: colors.text}]}>
+              Selecione a data
+            </Text>
 
             <View style={styles.pickerRow}>
               <View style={styles.pickerColumn}>
-                <Text style={[styles.pickerLabel, { color: colors.textSecondary }]}>Dia</Text>
-                <ScrollView style={styles.pickerScroll} showsVerticalScrollIndicator={false}>
+                <Text
+                  style={[styles.pickerLabel, {color: colors.textSecondary}]}
+                >
+                  Dia
+                </Text>
+                <ScrollView
+                  style={styles.pickerScroll}
+                  showsVerticalScrollIndicator={false}
+                >
                   {days.map(day => (
                     <TouchableOpacity
                       key={day}
                       style={[
                         styles.pickerItem,
-                        { backgroundColor: selectedDate.getDate() === day ? colors.primary : 'transparent' },
+                        {
+                          backgroundColor:
+                            selectedDate.getDate() === day
+                              ? colors.primary
+                              : 'transparent',
+                        },
                       ]}
-                      onPress={() => setSelectedDate(new Date(selectedDate.setDate(day)))}
+                      onPress={() =>
+                        setSelectedDate(new Date(selectedDate.setDate(day)))
+                      }
                     >
-                      <Text style={{ color: selectedDate.getDate() === day ? '#FFFFFF' : colors.text }}>
+                      <Text
+                        style={{
+                          color:
+                            selectedDate.getDate() === day
+                              ? '#FFFFFF'
+                              : colors.text,
+                        }}
+                      >
                         {day}
                       </Text>
                     </TouchableOpacity>
@@ -93,18 +148,39 @@ function SimpleDatePicker({
               </View>
 
               <View style={styles.pickerColumn}>
-                <Text style={[styles.pickerLabel, { color: colors.textSecondary }]}>Mês</Text>
-                <ScrollView style={styles.pickerScroll} showsVerticalScrollIndicator={false}>
+                <Text
+                  style={[styles.pickerLabel, {color: colors.textSecondary}]}
+                >
+                  Mês
+                </Text>
+                <ScrollView
+                  style={styles.pickerScroll}
+                  showsVerticalScrollIndicator={false}
+                >
                   {months.map((month, idx) => (
                     <TouchableOpacity
                       key={month}
                       style={[
                         styles.pickerItem,
-                        { backgroundColor: selectedDate.getMonth() === idx ? colors.primary : 'transparent' },
+                        {
+                          backgroundColor:
+                            selectedDate.getMonth() === idx
+                              ? colors.primary
+                              : 'transparent',
+                        },
                       ]}
-                      onPress={() => setSelectedDate(new Date(selectedDate.setMonth(idx)))}
+                      onPress={() =>
+                        setSelectedDate(new Date(selectedDate.setMonth(idx)))
+                      }
                     >
-                      <Text style={{ color: selectedDate.getMonth() === idx ? '#FFFFFF' : colors.text }}>
+                      <Text
+                        style={{
+                          color:
+                            selectedDate.getMonth() === idx
+                              ? '#FFFFFF'
+                              : colors.text,
+                        }}
+                      >
                         {month.substring(0, 3)}
                       </Text>
                     </TouchableOpacity>
@@ -113,18 +189,41 @@ function SimpleDatePicker({
               </View>
 
               <View style={styles.pickerColumn}>
-                <Text style={[styles.pickerLabel, { color: colors.textSecondary }]}>Ano</Text>
-                <ScrollView style={styles.pickerScroll} showsVerticalScrollIndicator={false}>
+                <Text
+                  style={[styles.pickerLabel, {color: colors.textSecondary}]}
+                >
+                  Ano
+                </Text>
+                <ScrollView
+                  style={styles.pickerScroll}
+                  showsVerticalScrollIndicator={false}
+                >
                   {years.map(year => (
                     <TouchableOpacity
                       key={year}
                       style={[
                         styles.pickerItem,
-                        { backgroundColor: selectedDate.getFullYear() === year ? colors.primary : 'transparent' },
+                        {
+                          backgroundColor:
+                            selectedDate.getFullYear() === year
+                              ? colors.primary
+                              : 'transparent',
+                        },
                       ]}
-                      onPress={() => setSelectedDate(new Date(selectedDate.setFullYear(year)))}
+                      onPress={() =>
+                        setSelectedDate(
+                          new Date(selectedDate.setFullYear(year))
+                        )
+                      }
                     >
-                      <Text style={{ color: selectedDate.getFullYear() === year ? '#FFFFFF' : colors.text }}>
+                      <Text
+                        style={{
+                          color:
+                            selectedDate.getFullYear() === year
+                              ? '#FFFFFF'
+                              : colors.text,
+                        }}
+                      >
                         {year}
                       </Text>
                     </TouchableOpacity>
@@ -135,16 +234,18 @@ function SimpleDatePicker({
 
             <View style={styles.pickerActions}>
               <TouchableOpacity
-                style={[styles.pickerBtn, { borderColor: colors.border }]}
+                style={[styles.pickerBtn, {borderColor: colors.border}]}
                 onPress={() => setShowPicker(false)}
               >
-                <Text style={{ color: colors.textSecondary }}>Cancelar</Text>
+                <Text style={{color: colors.textSecondary}}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.pickerBtn, { backgroundColor: colors.primary }]}
+                style={[styles.pickerBtn, {backgroundColor: colors.primary}]}
                 onPress={handleConfirm}
               >
-                <Text style={{ color: '#FFFFFF', fontWeight: '600' }}>Confirmar</Text>
+                <Text style={{color: '#FFFFFF', fontWeight: '600'}}>
+                  Confirmar
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -161,21 +262,33 @@ export function TransactionModal({
   editingTransaction,
 }: TransactionModalProps) {
   const colors = useColors();
-  const { user } = useAuth();
-  const { isFamilyMode, familyId } = useFamilyMode();
-  const { categories } = useCategories();
+  const {user} = useAuth();
+  const {isFamilyMode, familyId} = useFamilyMode();
+  const {categories, create} = useCategories();
 
   // Form state
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<'income' | 'expense'>('expense');
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  );
   const [date, setDate] = useState(new Date());
   const [isFixed, setIsFixed] = useState(false);
   const [isRecurring, setIsRecurring] = useState(false);
-  const [recurringFrequency, setRecurringFrequency] = useState<'weekly' | 'monthly'>('monthly');
+  const [recurringFrequency, setRecurringFrequency] = useState<
+    'weekly' | 'monthly'
+  >('monthly');
   const [isSaving, setIsSaving] = useState(false);
-  const [errors, setErrors] = useState<{ description?: string; amount?: string }>({});
+  const [errors, setErrors] = useState<{description?: string; amount?: string}>(
+    {}
+  );
+
+  // New category inline creation
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryColor, setNewCategoryColor] = useState(COLOR_PALETTE[0]);
+  const [newCategoryIcon, setNewCategoryIcon] = useState('home');
 
   // Reset form when modal opens/closes or editing transaction changes
   useEffect(() => {
@@ -189,7 +302,8 @@ export function TransactionModal({
         setIsFixed(editingTransaction.is_fixed || false);
         setIsRecurring(editingTransaction.is_recurring);
         setRecurringFrequency(
-          (editingTransaction.recurring_interval as 'weekly' | 'monthly') || 'monthly'
+          (editingTransaction.recurring_interval as 'weekly' | 'monthly') ||
+            'monthly'
         );
       } else {
         resetForm();
@@ -207,6 +321,10 @@ export function TransactionModal({
     setIsRecurring(false);
     setRecurringFrequency('monthly');
     setErrors({});
+    setShowNewCategory(false);
+    setNewCategoryName('');
+    setNewCategoryColor(COLOR_PALETTE[0]);
+    setNewCategoryIcon('home');
   };
 
   const handleClose = () => {
@@ -215,7 +333,7 @@ export function TransactionModal({
   };
 
   const validate = (): boolean => {
-    const newErrors: { description?: string; amount?: string } = {};
+    const newErrors: {description?: string; amount?: string} = {};
     if (!description.trim()) {
       newErrors.description = 'Descrição é obrigatória';
     }
@@ -248,13 +366,13 @@ export function TransactionModal({
       }
 
       if (editingTransaction) {
-        const { error } = await supabase
+        const {error} = await supabase
           .from('transactions')
           .update(transactionData)
           .eq('id', editingTransaction.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase
+        const {error} = await supabase
           .from('transactions')
           .insert([transactionData]);
         if (error) throw error;
@@ -293,17 +411,34 @@ export function TransactionModal({
     setDate(selectedDate);
   };
 
-  const filteredCategories = categories.filter(c => (c as Record<string, unknown>).type === type);
+  const handleCreateCategory = async () => {
+    if (!newCategoryName.trim()) return;
+    try {
+      await create(newCategoryName, newCategoryColor, newCategoryIcon);
+      setShowNewCategory(false);
+      setNewCategoryName('');
+      setNewCategoryColor(COLOR_PALETTE[0]);
+      setNewCategoryIcon('home');
+    } catch (e) {
+      console.error('Error creating category:', e);
+    }
+  };
+
+  const filteredCategories = categories.filter(
+    c => (c as Record<string, unknown>).type === type
+  );
 
   return (
     <CustomModal
       visible={visible}
       onClose={handleClose}
       isLoading={isSaving}
-      accessibilityLabel={editingTransaction ? 'Editar transação' : 'Nova transação'}
+      accessibilityLabel={
+        editingTransaction ? 'Editar transação' : 'Nova transação'
+      }
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={[styles.modalTitle, { color: colors.text }]}>
+        <Text style={[styles.modalTitle, {color: colors.text}]}>
           {editingTransaction ? 'Editar Transação' : 'Nova Transação'}
         </Text>
 
@@ -328,14 +463,18 @@ export function TransactionModal({
 
         {/* Type Toggle */}
         <View style={styles.fieldContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>Tipo:</Text>
+          <Text style={[styles.label, {color: colors.text}]}>Tipo:</Text>
           <View style={styles.toggleContainer}>
             <TouchableOpacity
               style={[
                 styles.toggleButton,
                 {
-                  backgroundColor: type === 'income' ? colors.success : colors.surfaceSecondary,
-                  borderColor: type === 'income' ? colors.success : colors.border,
+                  backgroundColor:
+                    type === 'income'
+                      ? colors.success
+                      : colors.surfaceSecondary,
+                  borderColor:
+                    type === 'income' ? colors.success : colors.border,
                 },
               ]}
               onPress={() => setType('income')}
@@ -348,7 +487,7 @@ export function TransactionModal({
               <Text
                 style={[
                   styles.toggleText,
-                  { color: type === 'income' ? '#FFFFFF' : colors.textSecondary },
+                  {color: type === 'income' ? '#FFFFFF' : colors.textSecondary},
                 ]}
               >
                 Receita
@@ -358,8 +497,12 @@ export function TransactionModal({
               style={[
                 styles.toggleButton,
                 {
-                  backgroundColor: type === 'expense' ? colors.danger : colors.surfaceSecondary,
-                  borderColor: type === 'expense' ? colors.danger : colors.border,
+                  backgroundColor:
+                    type === 'expense'
+                      ? colors.danger
+                      : colors.surfaceSecondary,
+                  borderColor:
+                    type === 'expense' ? colors.danger : colors.border,
                 },
               ]}
               onPress={() => setType('expense')}
@@ -372,7 +515,10 @@ export function TransactionModal({
               <Text
                 style={[
                   styles.toggleText,
-                  { color: type === 'expense' ? '#FFFFFF' : colors.textSecondary },
+                  {
+                    color:
+                      type === 'expense' ? '#FFFFFF' : colors.textSecondary,
+                  },
                 ]}
               >
                 Despesa
@@ -383,14 +529,20 @@ export function TransactionModal({
 
         {/* Category Selector */}
         <View style={styles.fieldContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>Categoria:</Text>
+          <Text style={[styles.label, {color: colors.text}]}>Categoria:</Text>
           <View style={styles.categoryGrid}>
             <TouchableOpacity
               style={[
                 styles.categoryChip,
                 {
-                  backgroundColor: selectedCategoryId === null ? colors.primary : colors.surface,
-                  borderColor: selectedCategoryId === null ? colors.primary : colors.border,
+                  backgroundColor:
+                    selectedCategoryId === null
+                      ? colors.primary
+                      : colors.surface,
+                  borderColor:
+                    selectedCategoryId === null
+                      ? colors.primary
+                      : colors.border,
                 },
               ]}
               onPress={() => setSelectedCategoryId(null)}
@@ -398,41 +550,72 @@ export function TransactionModal({
               <Text
                 style={[
                   styles.categoryChipText,
-                  { color: selectedCategoryId === null ? '#FFFFFF' : colors.textSecondary },
+                  {
+                    color:
+                      selectedCategoryId === null
+                        ? '#FFFFFF'
+                        : colors.textSecondary,
+                  },
                 ]}
               >
                 Sem categoria
               </Text>
             </TouchableOpacity>
-            {filteredCategories.map((cat) => (
+            {filteredCategories.map(cat => (
               <TouchableOpacity
                 key={cat.id}
                 style={[
                   styles.categoryChip,
                   {
-                    backgroundColor: selectedCategoryId === cat.id ? colors.primary : colors.surface,
-                    borderColor: selectedCategoryId === cat.id ? colors.primary : colors.border,
+                    backgroundColor:
+                      selectedCategoryId === cat.id
+                        ? colors.primary
+                        : colors.surface,
+                    borderColor:
+                      selectedCategoryId === cat.id
+                        ? colors.primary
+                        : colors.border,
                   },
                 ]}
                 onPress={() => setSelectedCategoryId(cat.id)}
               >
-                <View style={[styles.categoryDot, { backgroundColor: cat.color }]} />
+                <View
+                  style={[styles.categoryDot, {backgroundColor: cat.color}]}
+                />
                 <Text
                   style={[
                     styles.categoryChipText,
-                    { color: selectedCategoryId === cat.id ? '#FFFFFF' : colors.textSecondary },
+                    {
+                      color:
+                        selectedCategoryId === cat.id
+                          ? '#FFFFFF'
+                          : colors.textSecondary,
+                    },
                   ]}
                 >
                   {cat.name}
                 </Text>
               </TouchableOpacity>
             ))}
+            <TouchableOpacity
+              style={[
+                styles.categoryChip,
+                styles.addCategoryChip,
+                {borderColor: colors.primary},
+              ]}
+              onPress={() => setShowNewCategory(true)}
+            >
+              <Ionicons name="add" size={18} color={colors.primary} />
+              <Text style={[styles.categoryChipText, {color: colors.primary}]}>
+                Nova
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
 
         {/* Date Picker */}
         <View style={styles.fieldContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>Data:</Text>
+          <Text style={[styles.label, {color: colors.text}]}>Data:</Text>
           <SimpleDatePicker
             value={date}
             onChange={handleDateChange}
@@ -442,13 +625,17 @@ export function TransactionModal({
 
         {/* Fixed / Variable Toggle */}
         <View style={styles.fieldContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>Fixos ou Variáveis:</Text>
+          <Text style={[styles.label, {color: colors.text}]}>
+            Fixos ou Variáveis:
+          </Text>
           <View style={styles.toggleContainer}>
             <TouchableOpacity
               style={[
                 styles.toggleButton,
                 {
-                  backgroundColor: isFixed ? colors.primary : colors.surfaceSecondary,
+                  backgroundColor: isFixed
+                    ? colors.primary
+                    : colors.surfaceSecondary,
                   borderColor: isFixed ? colors.primary : colors.border,
                 },
               ]}
@@ -457,7 +644,7 @@ export function TransactionModal({
               <Text
                 style={[
                   styles.toggleText,
-                  { color: isFixed ? '#FFFFFF' : colors.textSecondary },
+                  {color: isFixed ? '#FFFFFF' : colors.textSecondary},
                 ]}
               >
                 Fixo
@@ -467,7 +654,9 @@ export function TransactionModal({
               style={[
                 styles.toggleButton,
                 {
-                  backgroundColor: !isFixed ? colors.primary : colors.surfaceSecondary,
+                  backgroundColor: !isFixed
+                    ? colors.primary
+                    : colors.surfaceSecondary,
                   borderColor: !isFixed ? colors.primary : colors.border,
                 },
               ]}
@@ -476,7 +665,7 @@ export function TransactionModal({
               <Text
                 style={[
                   styles.toggleText,
-                  { color: !isFixed ? '#FFFFFF' : colors.textSecondary },
+                  {color: !isFixed ? '#FFFFFF' : colors.textSecondary},
                 ]}
               >
                 Variável
@@ -487,13 +676,15 @@ export function TransactionModal({
 
         {/* Recurring Toggle */}
         <View style={styles.fieldContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>Recorrente?</Text>
+          <Text style={[styles.label, {color: colors.text}]}>Recorrente?</Text>
           <View style={styles.toggleContainer}>
             <TouchableOpacity
               style={[
                 styles.toggleButton,
                 {
-                  backgroundColor: isRecurring ? colors.primary : colors.surfaceSecondary,
+                  backgroundColor: isRecurring
+                    ? colors.primary
+                    : colors.surfaceSecondary,
                   borderColor: isRecurring ? colors.primary : colors.border,
                 },
               ]}
@@ -502,7 +693,7 @@ export function TransactionModal({
               <Text
                 style={[
                   styles.toggleText,
-                  { color: isRecurring ? '#FFFFFF' : colors.textSecondary },
+                  {color: isRecurring ? '#FFFFFF' : colors.textSecondary},
                 ]}
               >
                 Sim
@@ -512,7 +703,9 @@ export function TransactionModal({
               style={[
                 styles.toggleButton,
                 {
-                  backgroundColor: !isRecurring ? colors.primary : colors.surfaceSecondary,
+                  backgroundColor: !isRecurring
+                    ? colors.primary
+                    : colors.surfaceSecondary,
                   borderColor: !isRecurring ? colors.primary : colors.border,
                 },
               ]}
@@ -521,7 +714,7 @@ export function TransactionModal({
               <Text
                 style={[
                   styles.toggleText,
-                  { color: !isRecurring ? '#FFFFFF' : colors.textSecondary },
+                  {color: !isRecurring ? '#FFFFFF' : colors.textSecondary},
                 ]}
               >
                 Não
@@ -533,14 +726,22 @@ export function TransactionModal({
         {/* Recurring Frequency */}
         {isRecurring && (
           <View style={styles.fieldContainer}>
-            <Text style={[styles.label, { color: colors.text }]}>Frequência:</Text>
+            <Text style={[styles.label, {color: colors.text}]}>
+              Frequência:
+            </Text>
             <View style={styles.toggleContainer}>
               <TouchableOpacity
                 style={[
                   styles.toggleButton,
                   {
-                    backgroundColor: recurringFrequency === 'weekly' ? colors.primary : colors.surfaceSecondary,
-                    borderColor: recurringFrequency === 'weekly' ? colors.primary : colors.border,
+                    backgroundColor:
+                      recurringFrequency === 'weekly'
+                        ? colors.primary
+                        : colors.surfaceSecondary,
+                    borderColor:
+                      recurringFrequency === 'weekly'
+                        ? colors.primary
+                        : colors.border,
                   },
                 ]}
                 onPress={() => setRecurringFrequency('weekly')}
@@ -548,7 +749,12 @@ export function TransactionModal({
                 <Text
                   style={[
                     styles.toggleText,
-                    { color: recurringFrequency === 'weekly' ? '#FFFFFF' : colors.textSecondary },
+                    {
+                      color:
+                        recurringFrequency === 'weekly'
+                          ? '#FFFFFF'
+                          : colors.textSecondary,
+                    },
                   ]}
                 >
                   Semanal
@@ -558,8 +764,14 @@ export function TransactionModal({
                 style={[
                   styles.toggleButton,
                   {
-                    backgroundColor: recurringFrequency === 'monthly' ? colors.primary : colors.surfaceSecondary,
-                    borderColor: recurringFrequency === 'monthly' ? colors.primary : colors.border,
+                    backgroundColor:
+                      recurringFrequency === 'monthly'
+                        ? colors.primary
+                        : colors.surfaceSecondary,
+                    borderColor:
+                      recurringFrequency === 'monthly'
+                        ? colors.primary
+                        : colors.border,
                   },
                 ]}
                 onPress={() => setRecurringFrequency('monthly')}
@@ -567,7 +779,12 @@ export function TransactionModal({
                 <Text
                   style={[
                     styles.toggleText,
-                    { color: recurringFrequency === 'monthly' ? '#FFFFFF' : colors.textSecondary },
+                    {
+                      color:
+                        recurringFrequency === 'monthly'
+                          ? '#FFFFFF'
+                          : colors.textSecondary,
+                    },
                   ]}
                 >
                   Mensal
@@ -580,19 +797,113 @@ export function TransactionModal({
         {/* Action Buttons */}
         <View style={styles.actions}>
           <TouchableOpacity
-            style={[styles.cancelButton, { borderColor: colors.border }]}
+            style={[styles.cancelButton, {borderColor: colors.border}]}
             onPress={handleClose}
           >
-            <Text style={[styles.cancelText, { color: colors.textSecondary }]}>Cancelar</Text>
+            <Text style={[styles.cancelText, {color: colors.textSecondary}]}>
+              Cancelar
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.saveButton, { backgroundColor: colors.primary }]}
+            style={[styles.saveButton, {backgroundColor: colors.primary}]}
             onPress={handleSave}
             disabled={isSaving}
           >
-            <Text style={styles.saveText}>{isSaving ? 'Salvando...' : 'Salvar'}</Text>
+            <Text style={styles.saveText}>
+              {isSaving ? 'Salvando...' : 'Salvar'}
+            </Text>
           </TouchableOpacity>
         </View>
+
+        {/* Inline New Category Modal */}
+        {showNewCategory && (
+          <View
+            style={[
+              styles.newCategoryOverlay,
+              {backgroundColor: colors.overlay},
+            ]}
+          >
+            <View
+              style={[
+                styles.newCategoryContainer,
+                {backgroundColor: colors.surface},
+              ]}
+            >
+              <View style={styles.newCategoryHeader}>
+                <Text style={[styles.newCategoryTitle, {color: colors.text}]}>
+                  Nova Categoria
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setShowNewCategory(false);
+                    setNewCategoryName('');
+                  }}
+                >
+                  <Ionicons
+                    name="close"
+                    size={22}
+                    color={colors.textSecondary}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <Input
+                label="Nome"
+                placeholder="Nome da categoria"
+                value={newCategoryName}
+                onChangeText={setNewCategoryName}
+              />
+
+              <Text style={[styles.colorLabel, {color: colors.textSecondary}]}>
+                Cor
+              </Text>
+              <View style={styles.colorRow}>
+                {COLOR_PALETTE.map(c => (
+                  <TouchableOpacity
+                    key={c}
+                    style={[
+                      styles.colorOption,
+                      {backgroundColor: c},
+                      newCategoryColor === c && styles.colorSelected,
+                    ]}
+                    onPress={() => setNewCategoryColor(c)}
+                  />
+                ))}
+              </View>
+
+              <Text style={[styles.colorLabel, {color: colors.textSecondary}]}>
+                Ícone
+              </Text>
+              <CategoryIconSelector
+                selected={newCategoryIcon}
+                onSelect={setNewCategoryIcon}
+              />
+
+              <View style={styles.newCategoryActions}>
+                <TouchableOpacity
+                  style={[styles.newCategoryBtn, {borderColor: colors.border}]}
+                  onPress={() => {
+                    setShowNewCategory(false);
+                    setNewCategoryName('');
+                  }}
+                >
+                  <Text style={{color: colors.textSecondary}}>Cancelar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.newCategoryBtn,
+                    {backgroundColor: colors.primary},
+                  ]}
+                  onPress={handleCreateCategory}
+                >
+                  <Text style={{color: '#FFFFFF', fontWeight: '600'}}>
+                    Criar
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
       </ScrollView>
     </CustomModal>
   );
@@ -697,6 +1008,71 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  // New category inline styles
+  newCategoryOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: -16,
+    right: -16,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  newCategoryContainer: {
+    width: '90%',
+    maxWidth: 340,
+    borderRadius: 20,
+    padding: 20,
+    maxHeight: '80%',
+  },
+  newCategoryHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  newCategoryTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  colorLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  colorRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  colorOption: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+  },
+  colorSelected: {
+    borderWidth: 3,
+    borderColor: '#000',
+  },
+  newCategoryActions: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 20,
+  },
+  newCategoryBtn: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 9999,
+    borderWidth: 1,
+    alignItems: 'center',
+    minHeight: 44,
+  },
+  addCategoryChip: {
+    borderStyle: 'dashed',
   },
   // SimpleDatePicker styles
   pickerOverlay: {

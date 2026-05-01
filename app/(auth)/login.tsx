@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,17 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter, Link } from 'expo-router';
-import { useAuth } from '../../src/presentation/contexts/AuthContext';
-import { useColors } from '../hooks/useColors';
-import { borderRadius } from '../theme/constants';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useRouter, Link} from 'expo-router';
+import {useAuth} from '../../src/presentation/contexts/AuthContext';
+import {useColors} from '../hooks/useColors';
+import {borderRadius} from '../theme/constants';
 
 export default function LoginScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { signIn } = useAuth();
+  const {signIn} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,10 @@ export default function LoginScreen() {
       await signIn(email, password);
       router.replace('/(app)');
     } catch (error) {
-      Alert.alert('Erro de login', (error as Error).message || 'Falha ao fazer login');
+      Alert.alert(
+        'Erro de login',
+        (error as Error).message || 'Falha ao fazer login'
+      );
     } finally {
       setLoading(false);
     }
@@ -45,19 +48,35 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[styles.container, { backgroundColor: colors.background, paddingBottom: insets.bottom, paddingTop: insets.top }]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.background,
+          paddingBottom: insets.bottom,
+          paddingTop: insets.top,
+        },
+      ]}
     >
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Text style={[styles.logo, { color: colors.text }]}>💰 Financelio</Text>
-        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Controle suas finanças</Text>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={[styles.logo, {color: colors.text}]}>💰 Financelio</Text>
+        <Text style={[styles.subtitle, {color: colors.textSecondary}]}>
+          Controle suas finanças
+        </Text>
 
         <View style={styles.form}>
           <TextInput
-            style={[styles.input, {
-              backgroundColor: colors.surface,
-              color: colors.text,
-              borderColor: colors.border,
-            }]}
+            style={[
+              styles.input,
+              {
+                backgroundColor: colors.surface,
+                color: colors.text,
+                borderColor: colors.border,
+              },
+            ]}
             placeholder="Email"
             placeholderTextColor={colors.textDisabled}
             value={email}
@@ -67,11 +86,14 @@ export default function LoginScreen() {
             autoCorrect={false}
           />
           <TextInput
-            style={[styles.input, {
-              backgroundColor: colors.surface,
-              color: colors.text,
-              borderColor: colors.border,
-            }]}
+            style={[
+              styles.input,
+              {
+                backgroundColor: colors.surface,
+                color: colors.text,
+                borderColor: colors.border,
+              },
+            ]}
             placeholder="Senha"
             placeholderTextColor={colors.textDisabled}
             value={password}
@@ -79,7 +101,7 @@ export default function LoginScreen() {
             secureTextEntry
           />
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.primary }]}
+            style={[styles.button, {backgroundColor: colors.primary}]}
             onPress={handleLogin}
             disabled={loading}
             activeOpacity={0.8}
@@ -94,8 +116,11 @@ export default function LoginScreen() {
 
         <Link href="/register" asChild>
           <TouchableOpacity>
-            <Text style={[styles.linkText, { color: colors.textSecondary }]}>
-              Não tem conta? <Text style={[styles.linkBold, { color: colors.primary }]}>Cadastre-se</Text>
+            <Text style={[styles.linkText, {color: colors.textSecondary}]}>
+              Não tem conta?{' '}
+              <Text style={[styles.linkBold, {color: colors.primary}]}>
+                Cadastre-se
+              </Text>
             </Text>
           </TouchableOpacity>
         </Link>
@@ -105,11 +130,17 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { flex: 1, justifyContent: 'center', paddingHorizontal: 24 },
-  logo: { fontSize: 36, fontWeight: '700', textAlign: 'center', marginBottom: 8, letterSpacing: -0.02 },
-  subtitle: { fontSize: 16, textAlign: 'center', marginBottom: 48 },
-  form: { gap: 16 },
+  container: {flex: 1},
+  content: {flex: 1, justifyContent: 'center', paddingHorizontal: 24},
+  logo: {
+    fontSize: 36,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 8,
+    letterSpacing: -0.02,
+  },
+  subtitle: {fontSize: 16, textAlign: 'center', marginBottom: 48},
+  form: {gap: 16},
   input: {
     borderRadius: borderRadius.md,
     padding: 14,
@@ -125,7 +156,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     minHeight: 48,
   },
-  buttonText: { color: '#FFFFFF', fontSize: 16, fontWeight: '600' },
-  linkText: { textAlign: 'center', marginTop: 24, fontSize: 14 },
-  linkBold: { fontWeight: '600' },
+  buttonText: {color: '#FFFFFF', fontSize: 16, fontWeight: '600'},
+  linkText: {textAlign: 'center', marginTop: 24, fontSize: 14},
+  linkBold: {fontWeight: '600'},
 });
