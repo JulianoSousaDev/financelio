@@ -1,9 +1,9 @@
-import { useColorScheme } from 'react-native';
 import { lightColors, darkColors, type ThemeColors } from '../theme/constants';
+import { useTheme } from '../contexts/ThemeContext';
 
 export function useColors(): ThemeColors {
-  const colorScheme = useColorScheme();
-  return colorScheme === 'dark' ? darkColors : lightColors;
+  const { isDark } = useTheme();
+  return isDark ? darkColors : lightColors;
 }
 
 // Helper hook for semantic colors (income/expense)

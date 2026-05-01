@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AuthProvider, useAuth } from '../src/presentation/contexts/AuthContext';
 import { FamilyProvider } from '../src/presentation/contexts/FamilyContext';
 import { ToastProvider } from '../src/presentation/components/ui/Toast';
+import { ThemeProvider, useTheme } from '../src/presentation/contexts/ThemeContext';
 import { useColors } from '../src/presentation/hooks/useColors';
 
 function useProtectedRoute() {
@@ -28,11 +29,12 @@ function useProtectedRoute() {
 
 function RootLayoutContent() {
   const colors = useColors();
+  const { isDark } = useTheme();
   useProtectedRoute();
 
   return (
     <>
-      <StatusBar style={colors.background === '#0B0D13' ? 'light' : 'dark'} />
+      <StatusBar style={isDark ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
           headerShown: false,
@@ -48,12 +50,14 @@ function RootLayoutContent() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <FamilyProvider>
-        <ToastProvider>
-          <RootLayoutContent />
-        </ToastProvider>
-      </FamilyProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <FamilyProvider>
+          <ToastProvider>
+            <RootLayoutContent />
+          </ToastProvider>
+        </FamilyProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

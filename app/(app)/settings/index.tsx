@@ -5,16 +5,19 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Switch,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
 import {Ionicons} from '@expo/vector-icons';
 import {useColors} from '../../src/presentation/hooks/useColors';
+import {useTheme} from '../../src/presentation/contexts/ThemeContext';
 
 export default function SettingsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <ScrollView
@@ -54,6 +57,28 @@ export default function SettingsScreen() {
           color={colors.textSecondary}
         />
       </TouchableOpacity>
+
+      <View style={[styles.menuItem, {borderBottomColor: colors.border}]}>
+        <View
+          style={[styles.iconBox, {backgroundColor: colors.warning + '20'}]}
+        >
+          <Ionicons name="moon" size={22} color={colors.warning} />
+        </View>
+        <View style={styles.menuContent}>
+          <Text style={[styles.menuTitle, {color: colors.text}]}>
+            Tema Escuro
+          </Text>
+          <Text style={[styles.menuSubtitle, {color: colors.textSecondary}]}>
+            {isDark ? 'Ativado' : 'Desativado'}
+          </Text>
+        </View>
+        <Switch
+          value={isDark}
+          onValueChange={toggleTheme}
+          trackColor={{false: colors.border, true: colors.primary}}
+          thumbColor="#FFFFFF"
+        />
+      </View>
     </ScrollView>
   );
 }
