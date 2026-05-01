@@ -414,7 +414,12 @@ export function TransactionModal({
   const handleCreateCategory = async () => {
     if (!newCategoryName.trim()) return;
     try {
-      await create(newCategoryName, newCategoryColor, newCategoryIcon);
+      const newCat = await create(
+        newCategoryName,
+        newCategoryColor,
+        newCategoryIcon
+      );
+      setSelectedCategoryId(newCat.id); // Auto-selecionar
       setShowNewCategory(false);
       setNewCategoryName('');
       setNewCategoryColor(COLOR_PALETTE[0]);
