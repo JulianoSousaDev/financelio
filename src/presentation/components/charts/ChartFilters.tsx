@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useChartFilters } from '../../../hooks/useChartFilters';
 import { useFamilyContext } from '../../contexts/FamilyContext';
-import { useColors } from '../../../../app/hooks/useColors';
+import { useColors } from '../../hooks/useColors';
 import type { ChartPeriod } from '../../../shared/types';
 
 const PERIOD_OPTIONS: { value: ChartPeriod; label: string }[] = [

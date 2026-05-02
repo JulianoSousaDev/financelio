@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { ChartCard } from './ChartCard';
-import { useColors, useSemanticColors } from '../../../../app/hooks/useColors';
+import { useColors, useSemanticColors } from '../../hooks/useColors';
 import { useChartData } from '../../../hooks/useChartData';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');

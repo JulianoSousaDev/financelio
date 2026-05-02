@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useColors} from '../../../app/hooks/useColors';
+import {useColors} from '../hooks/useColors';
 
 interface DashboardCardProps {
   title: string;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, StyleSheet, View, Text, ViewStyle } from 'react-native';
-import { useColors } from '../../../../app/hooks/useColors';
+import { useColors } from '../../hooks/useColors';
 
 interface InputProps {
   label?: string;

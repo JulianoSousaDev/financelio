@@ -8,9 +8,11 @@ import React, {
   ReactNode,
 } from 'react';
 import {Animated, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {Ionicons, IoniconsName} from '@expo/vector-icons';
-import {useColors} from '../hooks/useColors';
-import {darkColors} from '../theme/constants';
+import {Ionicons} from '@expo/vector-icons';
+import {useColors} from '../../hooks/useColors';
+import {darkColors} from '../../theme/constants';
+
+type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 

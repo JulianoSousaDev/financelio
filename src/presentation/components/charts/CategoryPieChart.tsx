@@ -2,7 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { ChartCard } from './ChartCard';
-import { useColors } from '../../../../app/hooks/useColors';
+import { useColors } from '../../hooks/useColors';
 import { useChartData } from '../../../hooks/useChartData';
 import { generateRandomColor } from '../../../services/chartService';
 import type { CategoryPieData } from '../../../shared/types';

@@ -10,6 +10,7 @@ import {
   Animated,
   PanResponder,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Ionicons} from '@expo/vector-icons';
@@ -17,8 +18,8 @@ import {useLocalSearchParams} from 'expo-router';
 import {
   useColors,
   useSemanticColors,
-} from '../../src/presentation/hooks/useColors';
-import {useToast} from '../../src/presentation/hooks/useToast';
+} from '../../../src/presentation/hooks/useColors';
+import {useToast} from '../../../src/presentation/hooks/useToast';
 import {TransactionModal} from '../../../src/presentation/components/TransactionModal';
 import {useAuth} from '../../../src/presentation/contexts/AuthContext';
 import {useFamilyContext} from '../../../src/presentation/contexts/FamilyContext';

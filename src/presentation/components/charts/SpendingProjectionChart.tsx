@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { ChartCard } from './ChartCard';
-import { useColors, useSemanticColors } from '../../../../app/hooks/useColors';
+import { useColors, useSemanticColors } from '../../hooks/useColors';
 import { useChartData } from '../../../hooks/useChartData';
 import { useChartFilters } from '../../../hooks/useChartFilters';
 import type { ChartPeriod } from '../../../shared/types';

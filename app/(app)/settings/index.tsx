@@ -12,17 +12,15 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
 import {Ionicons} from '@expo/vector-icons';
-import {useColors} from '../../src/presentation/hooks/useColors';
-import {useTheme} from '../../src/presentation/contexts/ThemeContext';
-import {useFamilyMode} from '../../src/presentation/hooks/useFamilyMode';
-import {useAuth} from '../../src/presentation/contexts/AuthContext';
+import {useColors} from '../../../src/presentation/hooks/useColors';
+import {useTheme} from '../../../src/presentation/contexts/ThemeContext';
+import {useAuth} from '../../../src/presentation/contexts/AuthContext';
 
 export default function SettingsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const {isDark, toggleTheme} = useTheme();
-  const {isInFamily} = useFamilyMode();
   const {user, signOut} = useAuth();
 
   const handleLogout = () => {
@@ -95,32 +93,30 @@ export default function SettingsScreen() {
         </Text>
       </View>
 
-      {isInFamily && (
-        <TouchableOpacity
-          style={[styles.menuItem, {borderBottomColor: colors.border}]}
-          onPress={handleInviteMember}
-          activeOpacity={0.7}
+      <TouchableOpacity
+        style={[styles.menuItem, {borderBottomColor: colors.border}]}
+        onPress={handleInviteMember}
+        activeOpacity={0.7}
+      >
+        <View
+          style={[styles.iconBox, {backgroundColor: colors.success + '20'}]}
         >
-          <View
-            style={[styles.iconBox, {backgroundColor: colors.success + '20'}]}
-          >
-            <Ionicons name="person-add" size={22} color={colors.success} />
-          </View>
-          <View style={styles.menuContent}>
-            <Text style={[styles.menuTitle, {color: colors.text}]}>
-              Convidar membro da família
-            </Text>
-            <Text style={[styles.menuSubtitle, {color: colors.textSecondary}]}>
-              Compartilhe o app com sua família
-            </Text>
-          </View>
-          <Ionicons
-            name="share-outline"
-            size={20}
-            color={colors.textSecondary}
-          />
-        </TouchableOpacity>
-      )}
+          <Ionicons name="person-add" size={22} color={colors.success} />
+        </View>
+        <View style={styles.menuContent}>
+          <Text style={[styles.menuTitle, {color: colors.text}]}>
+            Convidar membro da família
+          </Text>
+          <Text style={[styles.menuSubtitle, {color: colors.textSecondary}]}>
+            Compartilhe o app com sua família
+          </Text>
+        </View>
+        <Ionicons
+          name="share-outline"
+          size={20}
+          color={colors.textSecondary}
+        />
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.menuItem, {borderBottomColor: colors.border}]}
@@ -171,12 +167,12 @@ export default function SettingsScreen() {
 
       {/* Logout Button */}
       <TouchableOpacity
-        style={[styles.logoutButton, {backgroundColor: colors.error + '15'}]}
+        style={[styles.logoutButton, {backgroundColor: colors.danger + '15'}]}
         onPress={handleLogout}
         activeOpacity={0.7}
       >
-        <Ionicons name="log-out-outline" size={22} color={colors.error} />
-        <Text style={[styles.logoutText, {color: colors.error}]}>
+        <Ionicons name="log-out-outline" size={22} color={colors.danger} />
+        <Text style={[styles.logoutText, {color: colors.danger}]}>
           Sair da conta
         </Text>
       </TouchableOpacity>

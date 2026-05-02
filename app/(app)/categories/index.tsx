@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from 'expo-router';
 import {Ionicons} from '@expo/vector-icons';
 import {useColors} from '../../../src/presentation/hooks/useColors';
 import {useToast} from '../../../src/presentation/hooks/useToast';
@@ -36,6 +37,7 @@ const COLOR_PALETTE = [
 export default function CategoriesScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
   const toast = useToast();
   const {categories, loading, create, update, remove, refetch} =
     useCategories();
@@ -45,6 +47,20 @@ export default function CategoriesScreen() {
   const [name, setName] = useState('');
   const [color, setColor] = useState(COLOR_PALETTE[0]);
   const [icon, setIcon] = useState('home');
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      navigation.setOptions({
+        tabBarStyle: {display: 'none'},
+      });
+    });
+    return () => {
+      unsubscribe();
+      navigation.setOptions({
+        tabBarStyle: {display: 'flex'},
+      });
+    };
+  }, [navigation]);
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);

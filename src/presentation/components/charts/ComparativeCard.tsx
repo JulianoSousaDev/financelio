@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { useColors, useSemanticColors } from '../../../../app/hooks/useColors';
+import { useColors, useSemanticColors } from '../../hooks/useColors';
 import { useFixedVsVariable } from '../../hooks/useFixedVsVariable';
 
 interface ComparativeCardProps {

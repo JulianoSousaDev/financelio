@@ -62,19 +62,6 @@ export default function AppLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="goals"
-        options={{
-          title: 'Metas',
-          tabBarIcon: ({focused, color}) => (
-            <Ionicons
-              name={focused ? 'flag' : 'flag-outline'}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
     </Tabs>
   );
 }

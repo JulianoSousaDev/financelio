@@ -9,7 +9,7 @@ import {
   Keyboard,
   BackHandler,
 } from 'react-native';
-import {useColors} from '../../../../app/hooks/useColors';
+import {useColors} from '../../hooks/useColors';
 
 interface ModalProps {
   visible: boolean;
