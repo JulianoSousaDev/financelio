@@ -21,7 +21,7 @@
 ### 3. `src/presentation/components/ui/CategoryIconSelector.tsx`
 - Seletor de ícone com:
   - Botão que abre Modal transparente
-  - Grid com 15 ícones (home, egg, truck, heart, film, book, credit-card, briefcase, dots-horizontal, shopping, car, medical, flight, gift, star)
+  - Grid com 15 ícones (home, egg, car-outline, heart, film, book, credit-card, briefcase, dots-horizontal, shopping, car, medical, flight, gift, star)
   - Seleção visual com highlight na cor primária
   - Fecha modal ao selecionar ícone
 

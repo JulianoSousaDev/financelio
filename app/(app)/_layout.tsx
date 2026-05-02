@@ -37,9 +37,10 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="transactions"
+        name="transactions/index"
         options={{
           title: 'Transações',
+          href: '/transactions',
           tabBarIcon: ({focused, color}) => (
             <Ionicons
               name={focused ? 'swap-horizontal' : 'swap-horizontal-outline'}
@@ -50,9 +51,10 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="settings/index"
         options={{
           title: 'Config',
+          href: '/settings',
           tabBarIcon: ({focused, color}) => (
             <Ionicons
               name={focused ? 'settings' : 'settings-outline'}
